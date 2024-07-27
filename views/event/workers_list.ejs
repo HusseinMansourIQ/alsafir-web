@@ -1,0 +1,93 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+
+    <div class="row mt-3">
+        <div class="col md-12">
+            <%- include('../partials/flashMessages') -%>
+        </div>
+
+    </div>
+
+    <form  action="/events/searchWorker" method="post">
+        <div class="row">
+    
+            <div class="form-group col-md-1">
+                <button type="submit" class="form-control btn-primary">بحث</button>
+                
+            </div>
+            
+            <div class="form-group col-md-3">
+                
+                <input class="form-control" id="search" name="search" type="text" placeholder="Search here">
+            </div>
+    
+            <div class="form-group col-md-2">
+                
+                <select class="form-control " id="w_avilability" name="w_avilability">
+                    <option value="1">متوفر</option>
+                    <option value="2">غير متوفر</option>
+                    <option value="3">الكل</option>
+                    </select>
+                </div>
+    
+                </div>
+            </form>
+
+
+    <table class="table mydatatable table-hover w-120" style="margin-top: 20px;" >
+
+        <tbody>
+        <tr>
+            <td class="">ID</td>
+            <td>الاسم</td>
+            <td>العنوان</td>
+            <td>رقم الهاتف</td>
+            <td>الحالة</td>
+            <td>الاجور</td>
+            <td>رقم الهوية</td>
+            <td>نوع الهوية</td>
+            <td>المهارة</td>
+            <td>حذف</td>
+
+        </tr>
+        <% workers.forEach((worker)=> {%>
+
+            <tr>
+                <td class=""><%=worker.id%></td>
+
+                <td> <a href="<%=  '/events/showdeb/' + 'debs.id' %>" style="text-decoration: unset;color: black;"><%=worker.w_name%></a></td>
+                <td><%=worker.w_addres%></td>
+                <td><%=worker.w_tel%></td>
+                <td><%=worker.avilability%></td>
+                <td><%=worker.w_study3%></td>
+                <td><%=worker.id_no%></td>
+                <td><%=worker.id_type%></td>
+                <td><%=worker.exper_name%></td>
+                <td><a href="<%=  '/events/deleteWorker/' + worker.id%>" class="btn btn-danger"  style="padding: 0 0 0 0 !important
+     ;margin: -2.5px auto -2px auto !important;"> حذف </a></td>
+
+
+            </tr>
+        <%})%>
+
+        </tbody>
+    </table>
+
+
+    <div class="row">
+        <div class="col-12 mt-2 mb-4">
+            <nav aria-label="...">
+                <ul class="pagination pagination-lg justify-content-center">
+
+
+
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<%- include('../partials/footer') -%>

@@ -1,0 +1,173 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        
+            <div class="col-md-6 offset-md-1">
+                <h1 class="display-4">Add New User:</h1>
+                <hr>
+                
+                <%- include('../partials/flashMessages') -%>      
+                <form  action="/events/addWorker" method="post">
+                    <div class="form-group">
+                    <label for="title">اسم المستخدم</label>
+                    <input type="text" name="w_name" id="w_name" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="title">رقم الهاتف</label>
+                    <input type="text" name="w_tel" id="w_tel" class="form-control">
+                </div>
+
+                    <div class="form-group">
+                            <label for="location">العنوان</label>
+                            <input type="text" name="w_address" id="w_address" class="form-control">
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 ">
+                                <label for="location">نوع الهوية</label>
+                                <select class="form-control" id="w_id_type" name="w_id_type">
+                                    <option>بدون هوية</option>
+                                    <option>بطاقة وطنية</option>
+                                    <option>بطاقة احوال مدنية</option>
+                                    <option>بطاقة سكن</option>
+                                    <option>شهادة جنسية</option>
+                                    <option>شهادة جنسية</option>
+                                    <option>جواز سفر</option>
+                                    <option>بطاقة ناخب</option>
+                                    <option>هوية طالب</option>
+                                    <option>هوية خاصة</option>
+                                  </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="location">رقم الهوية</label>
+                                <input type="text" name="w_id_no" id="user_note" class="form-control">
+                            </div>
+                        </div>
+                            
+                <div class="form-group">
+                    <label for="location">تاريخ الولادة</label>
+                    <input type="text" name="w_birth_Date" id="w_birth_Date" class="form-control">
+                </div>
+              
+                <div class="row">
+
+                    <div class="form-group col-md-6">
+                        <label for="location">التحصيل الدراسي الاول</label>
+                        <input type="text" name="w_study1" id="w_study1" class="form-control">
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label for="location">سنة التخرج</label>
+                        <input type="text" name="grad_1" id="grad_1" class="form-control">
+                    </div>
+                    
+                </div>
+                <div class="row">
+
+                    <div class="form-group col-md-6">
+                        <label for="location">التحصيل الدراسي الثاني</label>
+                        <input type="text" name="w_study2" id="w_study2" class="form-control">
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label for="location">سنة التخرج</label>
+                        <input type="text" name="grad_2" id="grad_2" class="form-control">
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="location">الاجور</label>
+                    <input type="text" name="w_salary" id="w_salary" class="form-control">
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 ">
+                        <label for="location">الحالة الاجتماعية</label>
+                        <select class="form-control" id="w_social_status" name="w_social_status">
+                            <option>متزوج/متزوجة</option>
+                            <option>اعزب</option>
+                            <option>متزوج</option>
+                            <option>مطلق</option>
+                            <option>باكر</option>
+                            <option>ارمل</option>
+                            <option>متزوجة</option>
+                            <option>مطلقة</option>
+                            <option>ارملة</option>
+                            <option>باكرة</option>
+                          </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="location">جنس المستفيد</label>
+                        <select class="form-control" id="w_sex" name="w_sex">
+                            <option>ذكر</option>
+                            <option>انثى</option>
+                            
+                          </select>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 ">
+                        <label for="location">الحالة</label>
+                        <select class="form-control" id="w_availablility" name="w_availablility">
+                            <option>متوفر</option>
+                            <option>غير متوفر</option>
+                            
+                          </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="location">الديانة</label>
+                        <select class="form-control" id="w_religion" name="w_religion">
+                            <option>مسلم</option>
+                            <option>مسيحي</option>
+                            
+                          </select>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="location">المهارة الاولى</label>
+                    <input type="text" name="exp_1" id="exp_1" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="location">المهارة الثانية</label>
+                    <input type="text" name="exp_2" id="exp_2" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="location">المهارة الثالثة</label>
+                    <input type="text" name="exp_3" id="exp_3" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">الملاحضات</label>
+                    <input type="text" name="w_note" id="w_note" class="form-control">
+                </div>
+
+
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"> Create</button>
+                    </div>
+            </form>
+        </div>
+
+        
+
+    </div>
+    
+    
+</div>
+
+    
+<%- include('../partials/footer') -%>

@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-rtl/dist/css/bootstrap-rtl.min.css">
+    <nav class="navbar navbar-expand-lg " style="background-color:#194769">
+        <a class="navbar-brand" href="/events" style="color: honeydew">AMC Groups</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/events" style="color: honeydew">Home <span class="sr-only">(current)</span></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="/events/user_debs"style="color: honeydew">debs list</a>
+            </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/events/create"style="color: honeydew">Add Newe User</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/hv/mario"style="color: honeydew">Have Fun</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/users/create"style="color: honeydew">Add Admin User</a>
+              </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+
+            <% if (!user) { %>
+              <li class="nav-item active">
+                <a class="nav-link" href="/users/login"style="color: honeydew"> Login</a>
+              </li>
+
+              <li class="nav-item active">
+                  <a class="nav-link" href="/users/signup"style="color: honeydew"> Signup</a>
+                </li>
+
+              <% } else { %>
+              <li class="nav-item active">
+                <a class="nav-link" href="/users/logout"style="color: honeydew"> logout</a>
+              </li>
+              <%}  %>
+       
+          </ul>
+        </div>
+      </nav>

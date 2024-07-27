@@ -1,0 +1,69 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        
+            <div class="col-md-6 offset-md-3">
+                <h1 class="display-4">أضافة شركة</h1>
+                <hr>
+                
+                <%- include('../partials/flashMessages') -%>      
+                <form  action="/events/addComp" method="post">
+
+                    <div class="form-group">
+                    <label for="title">عنوان الوضيفة</label>
+                    <input type="text" name="com_name" id="com_name" class="form-control">
+                    </div>
+
+                        <div class="form-group">
+                        <label for="title">رقم الهاتف</label>
+                        <input type="text" name="comp_tel" id="comp_tel" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">الموقع</label>
+                            <input type="text" name="comp_addres" id="comp_addres" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="title">نوع الوضيفة</label>
+                                <input type="text" name="comp_type" id="comp_type" class="form-control">
+                                </div>
+
+                                
+                            <label for="location">الحالة</label>
+                            <select class="form-control" id="avilability" name="avilability">
+                                <option>متوفر</option>
+                                <option>غير متوفر</option>
+                                </select>
+                        
+                                <hr>
+                        
+
+                            
+
+                                <div class="form-group">
+                                    <label for="title">الملاحضات</label>
+                                    <input type="text" name="note" id="note" class="form-control">
+                                    </div>
+
+               
+
+
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"> أضافة</button>
+                    </div>
+            </form>
+        </div>
+
+        
+
+    </div>
+    
+    
+</div>
+
+    
+<%- include('../partials/footer') -%>

@@ -1,0 +1,89 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+
+    <div class="row mt-3">
+        <div class="col md-12">
+            <%- include('../partials/flashMessages') -%>
+        </div>
+
+    </div>
+
+    <form  action="/events/searchComp" method="post">
+        <div class="row">
+    
+            <div class="form-group col-md-1">
+                <button type="submit" class="form-control btn-primary">بحث</button>
+                
+            </div>
+            
+            <div class="form-group col-md-3">
+                
+                <input class="form-control" id="search" name="search" type="text" placeholder="Search here">
+            </div>
+    
+            <div class="form-group col-md-2">
+                
+                <select class="form-control " id="c_avilability" name="c_avilability">
+                    <option value="1">متوفر</option>
+                    <option value="2">غير متوفر</option>
+                    <option value="3">الكل</option>
+                    </select>
+                </div>
+    
+                </div>
+            </form>
+
+    <table class="table mydatatable table-hover w-120" style="margin-top: 20px;" >
+
+        <tbody>
+        <tr>
+            <td class="">ID</td>
+            <td>اسم الشركة</td>
+            <td>رقم الهاتف</td>
+            <td>نوع الشركة</td>
+            <td>عنوان الشركة</td>
+            <td>الحالة</td>
+            <td>حذف</td>
+            
+
+        </tr>
+        <% comps.forEach((comp)=> {%>
+
+            <tr>
+                <td class=""><%=comp.com_id%></td>
+
+                <td> <a href="<%=  '/events/showComp/' + comp.com_id %>" style="text-decoration: unset;color: black;"><%=comp.com_name%></a></td>
+                <td><%=comp.comp_tel%></td>
+                <td><%=comp.comp_type%></td>
+                <td><%=comp.comp_addres%></td>
+                <td><%=comp.avilability%></td>
+                <td><a href="<%=  '/events/deleteComp/' + comp.com_id %>" class="btn btn-danger"  style="padding: 0 0 0 0 !important
+     ;margin: -2.5px auto -2px auto !important;"> حذف </a></td>
+                
+                
+                
+
+            </tr>
+        <%})%>
+
+        </tbody>
+    </table>
+
+
+    <div class="row">
+        <div class="col-12 mt-2 mb-4">
+            <nav aria-label="...">
+                <ul class="pagination pagination-lg justify-content-center">
+
+
+
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<%- include('../partials/footer') -%>
