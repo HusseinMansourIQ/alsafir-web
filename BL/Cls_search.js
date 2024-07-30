@@ -71,4 +71,23 @@ module.exports = {
 
         return result
     },
+
+    async search_sent_names(param , accept){
+
+        let request = await dal.sql_open()
+        request.input('Param', sql.NVarChar, param)
+        request.input('accept', sql.NVarChar, accept)
+        let result = await request.execute('sp_serch_sent')
+        await dal.sql_close()
+        return result
+    },
+
+    async get_all_sent_names(){
+
+        let request = await dal.sql_open()
+     
+        let result = await request.execute('get_all_sent_names_with_join')
+        await dal.sql_close()
+        return result
+    },
 }

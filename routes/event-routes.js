@@ -358,4 +358,66 @@ try{
                             console.log(err)
                          }
                      })
+
+                     router.get('/sent_list', async(req,res)=> {
+                        try{
+                           let result = await Search.get_all_sent_names()
+                            console.log(result)
+                           res.render('event/sent_list.ejs',{
+                            names : result.recordset,
+                            moment : moment
+                           })
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+                     
+                     router.post('/searchSent', async(req,res)=> {
+                        try{
+                           res.locals.user = ""
+                           let result = await Search.search_sent_names(req.body.search, req.body.avilability)
+                            console.log(result)
+                           res.render('event/sent_list.ejs',{
+                            names : result.recordset,
+                            moment : moment
+                           })
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+                     router.get('/sendWorker/:id/:workerName', async(req,res)=> {
+                        try{
+                           
+                           res.render('event/send_worker.ejs',{
+                            workerName :req.params.workerName,
+                            w_id : req.params.id
+                           })
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+                     router.post('/sendWorker', async(req,res)=> {
+                        try{
+                          let result =  await Insert.send_worker(
+                              req.body.w_id,
+                              req.body.com_id,
+                              req.body.avilability,
+                              req.body.note,
+                              req.body.sent_date,
+                              req.body.accept_date
+                           )        
+                           console.log(req.body)    
+                           console.log(result)    
+                           //res.redirect('/events/workers')           
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
 module.exports = router

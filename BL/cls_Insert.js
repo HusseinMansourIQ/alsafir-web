@@ -90,5 +90,30 @@ module.exports={
                 let result = await request.execute('sp_insert_comp');
                await Dal.sql_close()
                 
-            }
+            },
+
+            async send_worker(w_id ,com_id,accept,sent_nots, sent_date, accept_date){
+
+                try{
+
+                    let request =await Dal.sql_open()
+                    
+                    request.input('w_id',sql.Int, parseInt(w_id) );
+                    request.input('com_id',sql.Int, parseInt(com_id));
+                    request.input('accept',sql.NVarChar,accept);
+                    request.input('sent_nots',sql.NVarChar, sent_nots);
+                    request.input('sent_date',sql.Date, sent_date);
+                    request.input('accept_date',sql.Date, accept_date);
+                    
+                    
+                    //request.input('w_img',sql.NVarChar, "");
+                    console.log(parseInt(w_id) +" this is w_id")
+                    let result = await request.execute('sp_ins_sent');
+                    await Dal.sql_close()
+                    return result
+                }catch(err){
+                    console.log(err)
+                }
+                    
+                }
 }

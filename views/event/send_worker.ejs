@@ -1,0 +1,70 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        
+            <div class="col-md-6 offset-md-3">
+                <h1 class="display-5">أرسال الاسم: <%=workerName%></h1>
+                <hr>
+                
+                <%- include('../partials/flashMessages') -%>      
+                <form  action="/events/sendWorker" method="post">
+                <input type="hidden"  name="w_id" id="w_id" value="<%=w_id%>" >
+                    <div class="form-group">
+                    <label for="title">الشركة ID</label>
+                    <input type="text" name="com_id" id="com_id" class="form-control">
+                    </div>
+
+                        <div class="form-group">
+                        <label for="title">الحالة</label>
+                        <label for="location">الحالة</label>
+
+                        <select class="form-control" id="avilability" name="avilability">
+                            <option>غير مقبول</option>
+                            <option>مقبول</option>
+                            <option>تم العمل</option>
+                            <option>متابعة</option>
+
+                        </select>                   
+                        <hr>
+                        
+                <div class="row">
+
+                    <div class="form-group col-md-6">
+                        <label for="location">تاريخ الارسال</label>
+                        <input type="date" name="sent_date" id="sent_date" class="form-control">
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label for="location">تاريخ القبول</label>
+                        <input type="date" name="accept_date" id="accept_date" class="form-control">
+                    </div>
+                    
+                </div>
+
+                <div class="form-group">
+                    <label for="title">الملاحضات</label>
+                    <input type="text" name="note" id="note" class="form-control">
+                    </div>
+               
+
+               
+
+
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"> ارسال</button>
+                    </div>
+            </form>
+        </div>
+
+        
+
+    </div>
+    
+    
+</div>
+
+    
+<%- include('../partials/footer') -%>

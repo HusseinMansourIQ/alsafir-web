@@ -48,6 +48,7 @@
             <td>رقم الهوية</td>
             <td>نوع الهوية</td>
             <td>المهارة</td>
+            <td>ارسال</td>
             <td>حذف</td>
 
         </tr>
@@ -64,6 +65,8 @@
                 <td><%=worker.id_no%></td>
                 <td><%=worker.id_type%></td>
                 <td><%=worker.exper_name%></td>
+                <td><a href="<%=  '/events/sendWorker/' + worker.id + '/' + worker.w_name%>" class="btn btn-primary"  style="padding: 0 0 0 0 !important
+     ;margin: -2.5px auto -2px auto !important;"> ارسال </a></td>
                 <td><a href="<%=  '/events/deleteWorker/' + worker.id%>" class="btn btn-danger"  style="padding: 0 0 0 0 !important
      ;margin: -2.5px auto -2px auto !important;"> حذف </a></td>
 
