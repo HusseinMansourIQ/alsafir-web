@@ -412,8 +412,40 @@ try{
                               req.body.sent_date,
                               req.body.accept_date
                            )        
-                           console.log(req.body)    
+                           console.log(req.body.note + " this is notes ")    
                            console.log(result)    
+                           //res.redirect('/events/workers')           
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+                     router.get('/showSent/:sent_id/:w_id', async(req,res)=> {
+                        try{
+                           let result = await Search.get_sent_by_id(req.params.w_id , req.params.sent_id)
+                           console.log(result)
+                           res.render('event/show_sent.ejs',{
+                            name: result.recordset,
+                            moment: moment
+                           })
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+                     router.post('/updateSent', async(req,res)=> {
+                        try{
+                          let result =  await Update.update_sent(
+                              req.body.sent_id,
+                              req.body.com_id,
+                              req.body.avilability,
+                              req.body.note,
+                              req.body.sent_date,
+                              req.body.accept_date
+                           )        
+                           res.redirect('/events/sent_list')
+                           
                            //res.redirect('/events/workers')           
                          }catch(err){
                             console.log(err)

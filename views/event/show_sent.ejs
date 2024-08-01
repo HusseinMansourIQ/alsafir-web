@@ -1,0 +1,90 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        <% name.forEach((name)=> {%>
+
+            <div class="col-md-6 offset-md-3">
+                <h1 class="display-5"><%=name.w_name%></h1>
+                <hr>
+                
+                <%- include('../partials/flashMessages') -%>      
+                <form  action="/events/updateSent" method="post">
+                <input type="hidden"  name="sent_id" id="sent_id" value="<%=name.sent_id%>" >
+
+                    <div class="form-group">
+                    <label for="title">الشركة ID</label>
+                    <input type="text" name="com_id" id="com_id"  value="<%=name.com_id%>" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">اسم الشركة</label>
+                        <input type="text" readonly name="com_name" id="com_name"  value="<%=name.com_name%>" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                        <label for="title">الحالة</label>
+
+                        <select class="form-control" id="avilability" name="avilability">
+                            <option>غير مقبول</option>
+                            <option>مقبول</option>
+                            <option>تم العمل</option>
+                            <option>متابعة</option>
+
+                        </select>                   
+                        <hr>
+                        
+                <div class="row">
+
+                    <div class="form-group col-md-6">
+                        <label for="location">تاريخ الارسال</label>
+                        <input type="date" name="sent_date" id="sent_date" value="<%=moment(name.sent_date).format('YYYY-MM-DD')%>" class="form-control">
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label for="location">تاريخ القبول</label>
+                        <input type="date" name="accept_date" id="accept_date" value="<%=moment(name.accept_date).format('YYYY-MM-DD')%>" class="form-control">
+                    </div>
+                    
+                </div>
+
+                <div class="form-group">
+                    <label for="title">الملاحضات</label>
+                    <input type="text" name="note" id="note" value="<%=name.sent_nots%>" class="form-control">
+                    </div>
+               
+
+               
+
+
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"> تعديل</button>
+                    </div>
+            </form>
+            
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                // Value passed from the server-side
+                var s_avilability = '<%=name.accept%>';
+    
+    //j_avilability
+                // Set the selected value of the <select> element
+                var avilability = document.getElementById('avilability');
+                avilability.value = s_avilability
+            });
+        </script>
+        
+        <%})%>
+        
+
+    </div>
+    
+    
+</div>
+
+    
+<%- include('../partials/footer') -%>

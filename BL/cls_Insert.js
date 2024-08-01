@@ -106,8 +106,7 @@ module.exports={
                     request.input('accept_date',sql.Date, accept_date);
                     
                     
-                    //request.input('w_img',sql.NVarChar, "");
-                    console.log(parseInt(w_id) +" this is w_id")
+                   
                     let result = await request.execute('sp_ins_sent');
                     await Dal.sql_close()
                     return result

@@ -90,4 +90,14 @@ module.exports = {
         await dal.sql_close()
         return result
     },
+
+    async get_sent_by_id(w_id , sent_id){
+
+        let request = await dal.sql_open()
+        request.input('w_id', sql.Int,Number(w_id))
+        request.input('sent_id', sql.Int, Number(sent_id))
+        let result = await request.execute('sp_get_sent')
+        await dal.sql_close()
+        return result
+    },
 }

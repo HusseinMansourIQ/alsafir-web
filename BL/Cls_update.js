@@ -52,5 +52,29 @@ module.exports={
                 let result = await request.execute('sp_update_comp');
                await Dal.sql_close()
                 
-            }
+            },
+
+            async update_sent(sent_id ,com_id,accept,sent_nots, sent_date, accept_date){
+
+                try{
+
+                    let request =await Dal.sql_open()
+                    
+                    request.input('sent_id',sql.Int, parseInt(sent_id) );
+                    request.input('com_id',sql.Int, parseInt(com_id));
+                    request.input('accept',sql.NVarChar,accept);
+                    request.input('sent_nots',sql.NVarChar, sent_nots);
+                    request.input('sent_date',sql.Date, sent_date);
+                    request.input('accept_date',sql.Date, accept_date);
+                    
+                    
+                    //request.input('w_img',sql.NVarChar, "");
+                    let result = await request.execute('sp_update_sent');
+                    await Dal.sql_close()
+                    return result
+                }catch(err){
+                    console.log(err)
+                }
+                    
+                }
 }
