@@ -5,11 +5,17 @@ const Insert = require('../BL/cls_Insert')
 const Search = require('../BL/Cls_search')
 const Update = require("../BL/Cls_update")
 const Delete = require('../BL/Cls_delete')
+const Roles = require('../middleware/roles') 
 const { check, validationResult } = require('express-validator/check')
 const moment = require('moment');
 const sql = require('mssql/msnodesqlv8')
+const Jimp = require('jimp');
+const multer = require('multer');
 const { search_job } = require("../BL/Cls_search")
 moment().format();
+
+
+const upload = multer({ dest: 'uploads/' });
 
 const  connectionConfig = {
         
@@ -31,17 +37,31 @@ isAuthenticated = (req,res,next) => {
 
 //create new events
 
-router.get('/workers', async(req,res)=> {
+router.get('/workers' ,async(req,res)=> {
    try{
+//parseInt(req.query.page) ||
+      const page =  parseInt(req.query.page) || 1;
+      const limit = 50;
+
+      const offset = (page - 1)*limit
 
       let request = await Dal.sql_open()
-      request.input('Param',sql.NVarChar, "");
-      request.input('avilability',sql.Int, 6);
-      let result = await request.execute('sp_w_search');
-      console.log(result)
 
+      request.input('Param',sql.NVarChar, "")
+      request.input('avilability',sql.Int, 6)
+      request.input('Offset', sql.Int, offset)
+      request.input('PageSize', sql.Int, limit)
+
+      let result = await request.execute('sp_w_search');
+
+      const totalItems = result.recordsets[0][0].TotalCount;
+      console.log(result.recordsets[1])
+      const totalPages = Math.ceil(totalItems / limit);
+      
        res.render('event/workers_list', {
-        workers : result.recordset
+        workers : result.recordsets[1],
+        page : page,
+        totalPages : totalPages
        })
        Dal.sql_close()
     }catch(err){
@@ -49,26 +69,39 @@ router.get('/workers', async(req,res)=> {
     }
 })
 
-router.post('/searchWorker', async(req,res)=> {
+router.post('/searchWorker',Roles.lists, async(req,res)=> {
     try{
+      
+      const page =  parseInt(req.query.page) || 1;
+      const limit = 50;
+      const offset = (page - 1)*limit
+
         res.locals.user = ""
         let request = await Dal.sql_open()
         request.input('Param',sql.NVarChar, req.body.search);
         request.input('avilability',sql.Int, Number(req.body.w_avilability));
+        request.input('Offset', sql.Int, offset)
+        request.input('PageSize', sql.Int, limit)
+
         let result = await request.execute('sp_w_search');
-        console.log(result)
-  
-         res.render('event/workers_list', {
-          workers : result.recordset
-         })
-         Dal.sql_close()
+        
+           const totalItems = result.recordsets[0][0].TotalCount;
+           const totalPages = Math.ceil(totalItems / limit);
+           Dal.sql_close()
+      
+       res.render('event/workers_list', {
+        workers : result.recordsets[1],
+        page : page,
+        totalPages : totalPages
+       })
+
         
      }catch(err){
         console.log(err)
      }
  })
 
-router.get('/addWorker', async(req,res)=> {
+router.get('/addWorker',isAuthenticated,Roles.addition, async(req,res)=> {
     try{
  
        res.render('event/add_worker.ejs')
@@ -82,18 +115,29 @@ router.get('/addWorker', async(req,res)=> {
 
 // save user to db
 
-router.post('/addWorker',(req,res)=> {
+router.post('/addWorker',upload.single('image'),Roles.addition,async(req,res,next)=> {
+
+   if (!req.file) {
+      return res.status(400).send('No file uploaded, bitch.');
+  }
+
+      const image = await Jimp.read(req.file.buffer);
+      const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+      console.log("this is req.file " + buffer)
+  
 
 try{
 
     const data = [
-        { exper_name: "name", exper_level: 'level', exper_not: "note",exper_time :"time" },
-        {exper_name: "name", exper_level: 'level', exper_not: "note",exper_time :"time" },
-        { exper_name: "name", exper_level: 'level', exper_not: "note",exper_time :"time"}
+        { exper_name: req.body.exper_1, exper_level: req.body.level_1,exper_time :req.body.time_1},
+        { exper_name: req.body.exper_2, exper_level: req.body.level_2,exper_time :req.body.time_2},
+        { exper_name: req.body.exper_3, exper_level: req.body.level_3,exper_time :req.body.time_3}
     ];
 
+    console.log(req.body.w_note + " this is notes from add worker post ")
+
     // Define the table type parameter
-    const exper = new sql.Table('dbo.exper_TableType7');
+    const exper = new sql.Table('dbo.exper_TableType7_new');
     exper.columns.add('exper_name', sql.NVarChar(50));
     exper.columns.add('exper_level', sql.NVarChar(50));
     exper.columns.add('exper_not', sql.NVarChar(256));
@@ -101,10 +145,11 @@ try{
 
     // Add rows to the table type parameter
     data.forEach(row => {
-        exper.rows.add(row.exper_name, row.exper_level, row.exper_not, row.exper_time);
+        exper.rows.add(row.exper_name, row.exper_level,"", row.exper_time);
     });
 
-    Insert.insert_worker(
+    console.log(exper)
+   await Insert.insert_worker(
         req.body.w_name,
         req.body.w_tel,
         req.body.w_address,
@@ -119,8 +164,10 @@ try{
         req.body.w_social_status,
         req.body.w_sex,
         req.body.w_availablility,
-        req.body.w_religion,
-        exper)
+        req.body.w_note,
+        exper,
+        req.user.email,
+        buffer)
         
         res.json("okiiii")
     }catch(err){
@@ -130,7 +177,60 @@ try{
         
     })
 
-    router.get('/deleteWorker/:id', async(req,res)=> {
+    router.post('/updateWorker',Roles.addition,async(req,res)=> {
+
+      try{
+      
+         await Update.update_worker(
+              req.body.w_id,
+              req.body.w_name,
+              req.body.w_tel,
+              req.body.w_address,
+              req.body.w_id_type,
+              req.body.w_id_no,
+              req.body.w_birth_Date,
+              req.body.w_study1,
+              req.body.grad_1,
+              req.body.w_study2,
+              req.body.grad_2,
+              req.body.w_salary,
+              req.body.w_social_status,
+              req.body.w_sex,
+              req.body.w_availablility,
+              req.body.w_note,
+              req.user.email
+              )
+
+              await Update.update_exper_single(req.body.w_id, req.body.exper_id_1 ,req.body.exper_1 , req.body.level_1 , req.body.time_1)
+              await Update.update_exper_single(req.body.w_id, req.body.exper_id_2 ,req.body.exper_2 , req.body.level_2 , req.body.time_2)
+              await Update.update_exper_single(req.body.w_id, req.body.exper_id_3 ,req.body.exper_3 , req.body.level_3 , req.body.time_3)
+
+              res.json(req.body.w_id)
+          }catch(err){
+              console.log(err)
+          }
+              
+              
+          })
+
+    router.get('/showWorker/:id',isAuthenticated,async(req,res)=> {
+      try{
+
+         let worker = await Search.get_worker_by_id(req.params.id)
+         let exper = await Search.get_w_exper_by_id(req.params.id)
+         console.log(worker.recordset + " this is worker")
+   
+         res.render('event/show_worker.ejs',{
+            worker: worker.recordset,
+            exper: exper.recordset
+         })
+          
+       }catch(err){
+          console.log(err)
+       }
+   })
+
+    router.get('/deleteWorker/:id',isAuthenticated,Roles.editor, async(req,res)=> {
         try{
            let result = await Delete.delete_worker(req.params.id)
             console.log(result)
@@ -142,7 +242,7 @@ try{
      })
 
 
-    router.post('/addJob',(req,res)=> {
+    router.post('/addJob',Roles.addition,(req,res)=> {
 
         try{
         
@@ -169,7 +269,7 @@ try{
                 
             })
     
-    router.get('/addJob', async(req,res)=> {
+    router.get('/addJob',isAuthenticated, Roles.addition,async(req,res)=> {
         try{
      
            res.render('event/add_job.ejs')
@@ -179,12 +279,25 @@ try{
          }
      })
 
-     router.post('/searchJob', async(req,res)=> {
+     router.post('/searchJob',Roles.lists, async(req,res)=> {
         try{
-            res.locals.user= ""
-           let result = await Search.search_job(req.body.search , Number(req.body.j_avilability))
+           res.locals.user= ""
+        
+           const page =  parseInt(req.query.page) || 1;
+           const limit = 50;
+           const offset = (page - 1)*limit
+         
+           
+           let result = await Search.search_job(req.body.search , Number(req.body.j_avilability), offset, limit)
+           
+           const totalItems = result.recordsets[0][0].TotalCount;
+           console.log(result.recordsets[1])
+           const totalPages = Math.ceil(totalItems / limit); 
+
            res.render('event/jobs_list.ejs',{
-            jobs : result.recordset
+            jobs : result.recordsets[1],
+            page : page,
+            totalPages : totalPages
            })
             
          }catch(err){
@@ -192,20 +305,32 @@ try{
          }
      })
 
-     router.get('/jobs_list', async(req,res)=> {
+     router.get('/jobs_list',isAuthenticated, async(req,res)=> {
         try{
-           let result = await Search.get_all_jobs()
-            console.log(result)
+         const page =  parseInt(req.query.page) || 1;
+         const limit = 50;
+   
+         const offset = (page - 1)*limit
+         
+           let result = await Search.get_all_jobs(offset , limit)
+           
+           const totalItems = result.recordsets[0][0].TotalCount;
+           console.log(result.recordsets[1])
+           const totalPages = Math.ceil(totalItems / limit);          
+           
            res.render('event/jobs_list.ejs',{
-            jobs : result.recordset
+            jobs : result.recordsets[1],
+            page : page,
+            totalPages : totalPages
            })
+           console.log(res.locals.user.role + " this is role ")
             
          }catch(err){
             console.log(err)
          }
      })
 
-     router.get('/showJob/:id', async(req,res)=> {
+     router.get('/showJob/:id', isAuthenticated,async(req,res)=> {
         try{
            let result = await Search.show_job(req.params.id)
             console.log(result)
@@ -218,7 +343,7 @@ try{
          }
      })
 
-     router.post('/updateJob',(req,res)=> {
+     router.post('/updateJob',Roles.editor,(req,res)=> {
 
         try{
         
@@ -246,7 +371,7 @@ try{
                 
             })
 
-            router.get('/deleteJob/:id', async(req,res)=> {
+            router.get('/deleteJob/:id',isAuthenticated,Roles.editor, async(req,res)=> {
                 try{
                    let result = await Delete.delete_job(req.params.id)
                     console.log(result)
@@ -257,7 +382,7 @@ try{
                  }
              })
 
-            router.get('/addComp', async(req,res)=> {
+            router.get('/addComp',isAuthenticated,Roles.addition, async(req,res)=> {
                 try{
              
                    res.render('event/add_comp.ejs')
@@ -267,7 +392,7 @@ try{
                  }
              })
 
-             router.post('/addComp', async(req,res)=> {
+             router.post('/addComp',Roles.addition, async(req,res)=> {
                 try{
              
                     Insert.insert_comp(
@@ -286,12 +411,23 @@ try{
 
              
 
-             router.get('/comps_list', async(req,res)=> {
+             router.get('/comps_list',isAuthenticated,Roles.lists, async(req,res)=> {
                 try{
-                   let result = await Search.get_all_comps()
-                    console.log(result)
+
+                     const page =  parseInt(req.query.page) || 1;
+                     const limit = 50;
+                     const offset = (page - 1)*limit
+
+                   let result = await Search.get_all_comps(offset,limit)
+                   
+                   const totalItems = result.recordsets[0][0].TotalCount;
+                   console.log(result.recordsets[1])
+                   const totalPages = Math.ceil(totalItems / limit);
+                  
                    res.render('event/comps_list.ejs',{
-                    comps : result.recordset
+                    comps : result.recordsets[1],
+                    page : page,
+                    totalPages : totalPages
                    })
                     
                  }catch(err){
@@ -299,7 +435,7 @@ try{
                  }
              })
 
-             router.get('/showComp/:id', async(req,res)=> {
+             router.get('/showComp/:id',isAuthenticated,Roles.lists, async(req,res)=> {
                 try{
                    let result = await Search.show_comp(req.params.id)
                     console.log(result)
@@ -312,7 +448,7 @@ try{
                  }
              })
         
-             router.post('/updateComp',(req,res)=> {
+             router.post('/updateComp',Roles.editor,(req,res)=> {
         
                 try{
                 
@@ -335,7 +471,7 @@ try{
                         
                     })
 
-                    router.get('/deleteComp/:id', async(req,res)=> {
+                    router.get('/deleteComp/:id',isAuthenticated, Roles.editor,async(req,res)=> {
                         try{
                            let result = await Delete.delete_comp(req.params.id)
                             console.log(result)
@@ -346,12 +482,23 @@ try{
                          }
                      })
 
-                     router.post('/searchComp', async(req,res)=> {
+                     router.post('/searchComp',Roles.lists, async(req,res)=> {
                         try{
                             res.locals.user= ""
-                           let result = await Search.search_comp(req.body.search , Number(req.body.c_avilability))
-                           res.render('event/comps_list.ejs',{
-                            comps : result.recordset
+                            
+                            const page =  parseInt(req.query.page) || 1;
+                            const limit = 50;
+                            const offset = (page - 1)*limit
+
+                            let result = await Search.search_comp(req.body.search , Number(req.body.c_avilability),offset,limit)
+                           
+                            const totalItems = result.recordsets[0][0].TotalCount;
+                            const totalPages = Math.ceil(totalItems / limit);
+
+                            res.render('event/comps_list.ejs',{
+                            comps : result.recordsets[1],
+                            page : page,
+                            totalPages : totalPages
                            })
                             
                          }catch(err){
@@ -359,13 +506,24 @@ try{
                          }
                      })
 
-                     router.get('/sent_list', async(req,res)=> {
+                     router.get('/sent_list',isAuthenticated,Roles.lists, async(req,res)=> {
                         try{
-                           let result = await Search.get_all_sent_names()
-                            console.log(result)
+                           
+                           const page =  parseInt(req.query.page) || 1;
+                           const limit = 50;
+                           const offset = (page - 1)*limit
+                           
+                           let result = await Search.get_all_sent_names(offset,limit)
+
+                           const totalItems = result.recordsets[0][0].TotalCount;
+                           console.log(result.recordsets[1])
+                           const totalPages = Math.ceil(totalItems / limit);
+
                            res.render('event/sent_list.ejs',{
-                            names : result.recordset,
-                            moment : moment
+                            names : result.recordsets[1],
+                            moment : moment,
+                            page : page,
+                            totalPages : totalPages
                            })
                             
                          }catch(err){
@@ -374,14 +532,25 @@ try{
                      })
 
                      
-                     router.post('/searchSent', async(req,res)=> {
+                     router.post('/searchSent', Roles.lists, async(req,res)=> {
                         try{
+                           
                            res.locals.user = ""
+                           const page =  parseInt(req.query.page) || 1;
+                           const limit = 50;
+                           const offset = (page - 1)*limit
+                           
                            let result = await Search.search_sent_names(req.body.search, req.body.avilability)
-                            console.log(result)
-                           res.render('event/sent_list.ejs',{
+
+                           const totalItems = result.recordsets[0][0].TotalCount;
+                           console.log(result.recordsets[1])
+                           const totalPages = Math.ceil(totalItems / limit);
+                           
+                            res.render('event/sent_list.ejs',{
                             names : result.recordset,
-                            moment : moment
+                            moment : moment,
+                            page : page,
+                            totalPages : totalPages
                            })
                             
                          }catch(err){
@@ -389,7 +558,7 @@ try{
                          }
                      })
 
-                     router.get('/sendWorker/:id/:workerName', async(req,res)=> {
+                     router.get('/sendWorker/:id/:workerName',isAuthenticated,Roles.editor, async(req,res)=> {
                         try{
                            
                            res.render('event/send_worker.ejs',{
@@ -402,7 +571,7 @@ try{
                          }
                      })
 
-                     router.post('/sendWorker', async(req,res)=> {
+                     router.post('/sendWorker',Roles.editor, async(req,res)=> {
                         try{
                           let result =  await Insert.send_worker(
                               req.body.w_id,
@@ -420,7 +589,7 @@ try{
                          }
                      })
 
-                     router.get('/showSent/:sent_id/:w_id', async(req,res)=> {
+                     router.get('/showSent/:sent_id/:w_id',isAuthenticated,Roles.lists, async(req,res)=> {
                         try{
                            let result = await Search.get_sent_by_id(req.params.w_id , req.params.sent_id)
                            console.log(result)
@@ -434,7 +603,7 @@ try{
                          }
                      })
 
-                     router.post('/updateSent', async(req,res)=> {
+                     router.post('/updateSent',Roles.editor, async(req,res)=> {
                         try{
                           let result =  await Update.update_sent(
                               req.body.sent_id,

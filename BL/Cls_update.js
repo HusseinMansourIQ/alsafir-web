@@ -3,7 +3,53 @@ const Dal = require('../DAL/dal')
 
 module.exports={
 
+    async update_worker(w_id,w_name,w_tel,w_address,w_id_type, w_id_no, w_birth_date, w_study1, grad1, w_study2, grad2, w_salary, w_social_status, w_sex, w_availablility, w_note,email){
+                 
+
+        let request =await Dal.sql_open()
     
+            request.input('w_id',sql.Int, Number(w_id));
+            request.input('w_name',sql.NVarChar, w_name);
+            request.input('w_addres',sql.NVarChar,w_address);
+            request.input('w_id_type',sql.NVarChar, w_id_type);
+            request.input('w_id_no',sql.NVarChar, w_id_no);
+            request.input('w_pirthdate',sql.NVarChar, w_birth_date);
+            request.input('w_status',sql.NVarChar, w_social_status);
+            request.input('w_study1',sql.NVarChar, w_study1);
+            request.input('w_study2',sql.NVarChar, w_study2);
+            request.input('w_study3',sql.NVarChar, w_salary);
+            request.input('w_sex',sql.NVarChar, w_sex);
+            request.input('w_graduate_date1',sql.NVarChar, grad1);
+            request.input('w_graduate_date2',sql.NVarChar, grad2);
+            request.input('w_graduate_date3',sql.NVarChar, "");
+            request.input('w_experiances',w_tel); // phone number registered as experiences to avoid conflict (in the data base field it still w_tel so its just for the stored procedure)
+            request.input('avilability',sql.NVarChar, w_availablility);
+            request.input('w_note',sql.NVarChar, w_note);
+            request.input('User_whoInsert',sql.NVarChar, email);
+    
+            //request.input('w_img',sql.NVarChar, "");
+            
+            let result = await request.execute('sp_update_w');
+           await Dal.sql_close()
+            
+       
+        },
+
+        async update_exper_single(w_id , exper_id, exper_name, exper_level, exper_time){
+                 
+
+            let request =await Dal.sql_open()
+                request.input('w_id',sql.Int, Number(w_id));
+                request.input('exper_id',sql.Int,Number(exper_id));
+                request.input('exper_name',sql.NVarChar,exper_name);
+                request.input('exper_level',sql.NVarChar, exper_level);
+                request.input('exper_time',sql.NVarChar, exper_time);
+                request.input('exper_not',sql.NVarChar,"");
+                                
+                let result = await request.execute('sp_update_exper_single');
+               await Dal.sql_close()
+                
+            },
     
 
     async update_job(id,jop_name,jop_addres,jop_sallry, jop_salary_type, jop_start_time, jop_end_time, jop_note, jop_oner, jop_tele, Username, avilability){
@@ -77,4 +123,6 @@ module.exports={
                 }
                     
                 }
+
+
 }

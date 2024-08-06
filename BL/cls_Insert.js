@@ -4,7 +4,7 @@ const Dal = require('../DAL/dal')
 module.exports={
 
     
-     async insert_worker(w_name,w_tel,w_address,w_id_type, w_id_no, w_birth_date, w_study1, grad1, w_study2, grad2, w_salary, w_social_status, w_sex, w_availablility, w_religion, w_note, exper){
+     async insert_worker(w_name,w_tel,w_address,w_id_type, w_id_no, w_birth_date, w_study1, grad1, w_study2, grad2, w_salary, w_social_status, w_sex, w_availablility, w_note, exper , email, image){
                  
 
     let request =await Dal.sql_open()
@@ -23,16 +23,15 @@ module.exports={
         request.input('w_graduate_date1',sql.NVarChar, grad1);
         request.input('w_graduate_date2',sql.NVarChar, grad2);
         request.input('w_graduate_date3',sql.NVarChar, "");
-        request.input('exper',exper);
-        request.input('w_experiances',"");
+        request.input('exper',sql.TVP,exper);
+        request.input('w_experiances',w_tel); // phone number registered as experiences to avoid conflict (in the data base field it still w_tel so its just for the stored procedure)
         request.input('avilability',sql.NVarChar, w_availablility);
         request.input('w_note',sql.NVarChar, w_note);
-        request.input('User_whoInsert',sql.NVarChar, "");
-
-        //request.input('w_img',sql.NVarChar, "");
+        request.input('User_whoInsert',sql.NVarChar, email);
+        request.input('w_img',sql.VarBinary, image);
         
         let result = await request.execute('sp_insert_new_worker');
-       await Dal.sql_close()
+        await Dal.sql_close()
         
    
     
@@ -96,7 +95,7 @@ module.exports={
 
                 try{
 
-                    let request =await Dal.sql_open()
+                    let request = await Dal.sql_open()
                     
                     request.input('w_id',sql.Int, parseInt(w_id) );
                     request.input('com_id',sql.Int, parseInt(com_id));

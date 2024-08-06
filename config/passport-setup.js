@@ -34,7 +34,8 @@ passport.use('local.signup', new localStrategy({
                 //create user
                 let newUser = new User()
                 newUser.email = req.body.email
-                newUser.password = newUser.hashPassword(req.body.password),
+                newUser.password = newUser.hashPassword(req.body.password)
+                newUser.role = req.body.role
                 newUser.avatar = "profile.png"
                 newUser.save ((err,user)=> {
                     if(!err) {

@@ -10,11 +10,11 @@
 
             <form  action="/users/login" method="post">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">اسم المستخدم</label>
                     <input type="text" name="email" id="email" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">الرمز السري</label>
                     <input type="password" name="password" id="password" class="form-control">
                 </div>
 
@@ -26,37 +26,6 @@
         </div>
     </div>
 </div>
-<canvas id="noteCanvas" style="border: 2px solid #0a5dc7"> </canvas>
 
-<script>  const canvas = document.getElementById('noteCanvas')
-
-        const ctx = canvas.getContext("2d")
-        let painting = false
-        function startPosition(){
-            painting=true
-            console.log("start")
-
-        }
-        function finishedPosition(){
-            painting=false
-            ctx.beginPath()
-        }
-        function draw(e){
-            if(!painting) return
-            ctx.lineCap = 'round'
-            ctx.lineWidth = 8
-            ctx.lineTo(e.clientX,e.clientY)
-            ctx.stroke()
-            ctx.beginPath()
-            ctx.moveTo(e.clientX,e.clientY)
-            ctx.strokeStyle = "red"
-            console.log("draw")
-        }
-        canvas.addEventListener("mousedown",startPosition)
-        canvas.addEventListener("mouseup",finishedPosition)
-        canvas.addEventListener("mousemove",draw)
-
-
-</script>
     
 <%- include('../partials/footer') -%>

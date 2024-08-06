@@ -3,31 +3,32 @@
 <div class="container">
     <div class="row mt-4">
         
-        <div class="col-md-3">
-        <form  action="/events/addWorker" method="post"  enctype="multipart/form-data">
-            <img src="<%= '/images/' + user.avatar%>" height="150px" width="150px">
-            <input type="file" class="form-control" name="image" aria-describedby="basic-addon1" >
-            <hr>
-        </div>
-        
-        <div class="col-md-6 offset-md-1">
+            <div class="col-md-6 offset-md-1">
                 <h1 class="display-4">اضافة اسم</h1>
                 <hr>
                 
-                <%- include('../partials/flashMessages') -%>      
+                <%- include('../partials/flashMessages') -%>  
+                <% worker.forEach((worker)=> {%>
+    
+                <form  action="/events/updateWorker" method="post">
+                    <input type="hidden" name="w_id" id="w_id" value="<%=worker.w_id%>">
+                    <input type="hidden" name="exper_id_1" id="exper_id_1" value="<%=exper[0].exper_id%>">
+                    <input type="hidden" name="exper_id_2" id="exper_id_2" value="<%=exper[1].exper_id%>">
+                    <input type="hidden" name="exper_id_3" id="exper_id_3" value="<%=exper[2].exper_id%>">
+
                     <div class="form-group">
-                    <label for="title">اضافة اسم</label>
-                    <input type="text" name="w_name" id="w_name" class="form-control">
+                    <label for="title">تعديل الاسم</label>
+                    <input type="text" name="w_name" id="w_name" class="form-control" value="<%=worker.w_name%>">
                 </div>
 
                 <div class="form-group">
                     <label for="title">رقم الهاتف</label>
-                    <input type="text" name="w_tel" id="w_tel" class="form-control">
+                    <input type="text" name="w_tel" id="w_tel" class="form-control" value="<%=worker.w_tel%>">
                 </div>
 
                     <div class="form-group">
                             <label for="location">العنوان</label>
-                            <input type="text" name="w_address" id="w_address" class="form-control">
+                            <input type="text" name="w_address" id="w_address" class="form-control" value="<%=worker.w_addres%>">
                         </div>
 
                         <div class="row">
@@ -50,25 +51,25 @@
                             
                             <div class="col-md-6">
                                 <label for="location">رقم الهوية</label>
-                                <input type="text" name="w_id_no" id="user_note" class="form-control">
+                                <input type="text" name="w_id_no" id="w_id_no" class="form-control" value="<%=worker.w_id_no%>">
                             </div>
                         </div>
                             
                 <div class="form-group">
                     <label for="location">تاريخ الولادة</label>
-                    <input type="text" name="w_birth_Date" id="w_birth_Date" class="form-control">
+                    <input type="text" name="w_birth_Date" id="w_birth_Date" value="<%=worker.w_pirthdate%>" class="form-control">
                 </div>
               
                 <div class="row">
 
                     <div class="form-group col-md-6">
                         <label for="location">التحصيل الدراسي الاول</label>
-                        <input type="text" name="w_study1" id="w_study1" class="form-control">
+                        <input type="text" name="w_study1" id="w_study1" value="<%=worker.w_study1%>" class="form-control">
                     </div>
                     
                     <div class="form-group col-md-6">
                         <label for="location">سنة التخرج</label>
-                        <input type="text" name="grad_1" id="grad_1" class="form-control">
+                        <input type="text" name="grad_1" id="grad_1" value="<%=worker.w_graduate_date1%>" class="form-control">
                     </div>
                     
                 </div>
@@ -76,18 +77,18 @@
 
                     <div class="form-group col-md-6">
                         <label for="location">التحصيل الدراسي الثاني</label>
-                        <input type="text" name="w_study2" id="w_study2" class="form-control">
+                        <input type="text" name="w_study2" id="w_study2" value="<%=worker.w_study2%>" class="form-control">
                     </div>
                     
                     <div class="form-group col-md-6">
                         <label for="location">سنة التخرج</label>
-                        <input type="text" name="grad_2" id="grad_2" class="form-control">
+                        <input type="text" name="grad_2" id="grad_2" value="<%=worker.w_graduate_date2%>" class="form-control">
                     </div>
                     
                 </div>
                 <div class="form-group">
                     <label for="location">الاجور</label>
-                    <input type="text" name="w_salary" id="w_salary" class="form-control">
+                    <input type="text" name="w_salary" id="w_salary" value="<%=worker.w_study3%>" class="form-control">
                 </div>
 
                 <div class="row">
@@ -119,16 +120,15 @@
                 </div>
 
                
-                  
+            
                         <label for="location">الحالة</label>
-                        <select class="form-control" id="w_availablility" name="w_availablility">
+                        <select class="form-control" id="w_availablility" name="w_availablility" >
                             <option>متوفر</option>
                             <option>غير متوفر</option>
                             
                           </select>
                     
                    
-          
 
                 <hr>
 
@@ -136,12 +136,12 @@
 
                     <div class="form-group col-md-4">
                         <label for="location">الخبرة الاولى</label>
-                        <input type="text" name="exper_1" id="exper_1" class="form-control">
+                        <input type="text" name="exper_1" id="exper_1" value="<%=exper[0].exper_name%>" class="form-control" >
                     </div>
                     
                     <div class="form-group col-md-4">
                         <label for="location">فترة العمل</label>
-                        <input type="text" name="time_1" id="time_1" class="form-control">
+                        <input type="text" name="time_1" id="time_1" value="<%=exper[0].exper_time%>" class="form-control">
                     </div>
 
                     <div class="col-md-4">
@@ -160,12 +160,12 @@
 
                     <div class="form-group col-md-4">
                         <label for="location">الخبرة الثانية</label>
-                        <input type="text" name="exper_2" id="exper_2" class="form-control">
+                        <input type="text" name="exper_2" id="exper_2" value="<%=exper[1].exper_name%>" class="form-control">
                     </div>
                     
                     <div class="form-group col-md-4">
                         <label for="location">فترة العمل</label>
-                        <input type="text" name="time_2" id="time_2" class="form-control">
+                        <input type="text" name="time_2" id="time_2" value="<%=exper[1].exper_time%>" class="form-control">
                     </div>
 
                     <div class="col-md-4">
@@ -184,12 +184,12 @@
 
                     <div class="form-group col-md-4">
                         <label for="location">الخبرة الثالثة</label>
-                        <input type="text" name="exper_3" id="exper_3" class="form-control">
+                        <input type="text" name="exper_3" id="exper_3" value="<%=exper[2].exper_name%>" class="form-control">
                     </div>
                     
                     <div class="form-group col-md-4">
                         <label for="location">فترة العمل</label>
-                        <input type="text" name="time_3" id="time_3" class="form-control">
+                        <input type="text" name="time_3" id="time_3" value="<%=exper[2].exper_time%>" class="form-control">
                     </div>
 
                     <div class="col-md-4">
@@ -206,7 +206,7 @@
 
                 <div class="form-group">
                     <label for="location">الملاحضات</label>
-                    <textarea   name="w_note" id="w_note" class="form-control"></textarea>
+                    <textarea   name="w_note" id="w_note" class="form-control"><%=worker.w_note%></textarea>
                 </div>
 
                 
@@ -215,11 +215,31 @@
 
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary"> اضافة</button>
+                        <button type="submit" class="btn btn-primary"> تعديل</button>
                     </div>
-                </div>
-                
             </form>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
+                 
+                  
+                 
+                    document.getElementById('w_id_type').value ='<%=worker.w_id_type%>';
+                    document.getElementById('w_social_status').value ='<%=worker.w_status%>';
+                    document.getElementById('w_sex').value ='<%=worker.w_sex%>';
+                    document.getElementById('w_availablility').value ='<%=worker.avilability%>';
+
+
+                    document.getElementById('level_1').value ='<%=exper[0].exper_level%>';
+                    document.getElementById('level_2').value ='<%=exper[1].exper_level%>';
+                    document.getElementById('level_3').value ='<%=exper[2].exper_level%>';
+
+                });
+            </script>
+
+            <%})%>
+        </div>
+
         
 
     </div>
