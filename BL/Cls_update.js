@@ -3,7 +3,7 @@ const Dal = require('../DAL/dal')
 
 module.exports={
 
-    async update_worker(w_id,w_name,w_tel,w_address,w_id_type, w_id_no, w_birth_date, w_study1, grad1, w_study2, grad2, w_salary, w_social_status, w_sex, w_availablility, w_note,email){
+    async update_worker(w_id,w_name,w_tel,w_address,w_id_type, w_id_no, w_birth_date, w_study1, grad1, w_study2, grad2, w_salary, w_social_status, w_sex, w_availablility, w_note,email,image){
                  
 
         let request =await Dal.sql_open()
@@ -26,6 +26,8 @@ module.exports={
             request.input('avilability',sql.NVarChar, w_availablility);
             request.input('w_note',sql.NVarChar, w_note);
             request.input('User_whoInsert',sql.NVarChar, email);
+            request.input('w_img',sql.VarBinary, image);
+
     
             //request.input('w_img',sql.NVarChar, "");
             

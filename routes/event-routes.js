@@ -120,10 +120,9 @@ router.post('/addWorker',upload.single('image'),Roles.addition,async(req,res,nex
    if (!req.file) {
       return res.status(400).send('No file uploaded, bitch.');
   }
-
-      const image = await Jimp.read(req.file.buffer);
+  console.log(req.file.path)
+      const image = await Jimp.read(req.file.path);
       const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
-      console.log("this is req.file " + buffer)
   
 
 try{
@@ -177,9 +176,29 @@ try{
         
     })
 
-    router.post('/updateWorker',Roles.addition,async(req,res)=> {
+    router.get('/get_w_image/:id',isAuthenticated,Roles.lists, async(req,res)=> {
+      try{
+         let result = await Search.get_w_image_by_id(req.params.id)
+         const imageData = result.recordset[0].w_img
+         console.log(typeof(imageData))
+         res.setHeader('Content-Type', 'image/png');
+        res.send(imageData);
+          
+       }catch(err){
+          console.log(err)
+       }
+   })
+
+    router.post('/updateWorker',upload.single('image'),Roles.addition,async(req,res)=> {
 
       try{
+
+         if (!req.file) {
+            return res.status(400).send('No file uploaded, bitch.');
+        }
+            const image = await Jimp.read(req.file.path);
+            const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+      
       
          await Update.update_worker(
               req.body.w_id,
@@ -198,7 +217,8 @@ try{
               req.body.w_sex,
               req.body.w_availablility,
               req.body.w_note,
-              req.user.email
+              req.user.email,
+              buffer
               )
 
               await Update.update_exper_single(req.body.w_id, req.body.exper_id_1 ,req.body.exper_1 , req.body.level_1 , req.body.time_1)

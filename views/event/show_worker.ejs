@@ -2,7 +2,12 @@
 <%- include('../partials/navbar') -%>
 <div class="container">
     <div class="row mt-4">
-        
+        <div class="col-md-3">
+            <form  action="/events/updateWorker" method="post"  enctype="multipart/form-data">
+                <img id="uploadedImage" name="uploadedImage" height="150px" width="150px">
+                <input type="file" class="form-control" name="image" id="image" aria-describedby="basic-addon1" >
+                <hr>
+            </div>
             <div class="col-md-6 offset-md-1">
                 <h1 class="display-4">اضافة اسم</h1>
                 <hr>
@@ -10,7 +15,6 @@
                 <%- include('../partials/flashMessages') -%>  
                 <% worker.forEach((worker)=> {%>
     
-                <form  action="/events/updateWorker" method="post">
                     <input type="hidden" name="w_id" id="w_id" value="<%=worker.w_id%>">
                     <input type="hidden" name="exper_id_1" id="exper_id_1" value="<%=exper[0].exper_id%>">
                     <input type="hidden" name="exper_id_2" id="exper_id_2" value="<%=exper[1].exper_id%>">
@@ -233,6 +237,12 @@
                     document.getElementById('level_1').value ='<%=exper[0].exper_level%>';
                     document.getElementById('level_2').value ='<%=exper[1].exper_level%>';
                     document.getElementById('level_3').value ='<%=exper[2].exper_level%>';
+
+                    const workerID = '<%=worker.w_id%>'
+                    console.log()
+                    const uploadedImage = document.getElementById('uploadedImage');
+                    uploadedImage.src = `/events/get_w_image/${workerID}`;
+
 
                 });
             </script>
