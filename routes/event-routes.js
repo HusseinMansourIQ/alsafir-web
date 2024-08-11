@@ -13,22 +13,8 @@ const Jimp = require('jimp');
 const multer = require('multer');
 const { search_job } = require("../BL/Cls_search")
 moment().format();
-
-
 const upload = multer({ dest: 'uploads/' });
 
-const  connectionConfig = {
-        
-    server: 'DESKTOP-PUAF950\\SQLEXPRESS01', // Double backslash to escape backslash in string
-    database: 'jops',
-    options: {
-        trustedConnection: true, // Use integrated security
-        enableArithAbort: true, // Option to enable arithmetic abort (recommended for some SQL Server versions)
-       // trustServerCertificate: true // Use if you are connecting to a local server with a self-signed certificate
-    },
-    driver: "msnodesqlv8"
-}
-// middleware to check if user is loogged in
 
 isAuthenticated = (req,res,next) => {
     if (req.isAuthenticated()) return next()
@@ -37,7 +23,7 @@ isAuthenticated = (req,res,next) => {
 
 //create new events
 
-router.get('/workers' ,async(req,res)=> {
+router.get('/workers' ,isAuthenticated, Roles.lists, async(req,res)=> {
    try{
 //parseInt(req.query.page) ||
       const page =  parseInt(req.query.page) || 1;
@@ -69,7 +55,7 @@ router.get('/workers' ,async(req,res)=> {
     }
 })
 
-router.post('/searchWorker',Roles.lists, async(req,res)=> {
+router.post('/searchWorker',isAuthenticated,Roles.lists, async(req,res)=> {
     try{
       
       const page =  parseInt(req.query.page) || 1;

@@ -38,7 +38,7 @@ app.get('*', (req,res,next)=> {
 
 app.get('/', (req,res)=> {
 
-   res.redirect('/events')
+   res.redirect('/events/Workers')
     
 })
 

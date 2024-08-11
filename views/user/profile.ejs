@@ -13,14 +13,11 @@
             <%- include('../partials/flashMessages') -%>      
             <p>
                 <% if (user) { %>
-                    welcome .. your email <%= user.email%> 
+                    welcome .. your user name is  <%= user.email%> 
                 <%}%>
             </p>
 
-            <form action="/users/uploadAvatar" method="POST" enctype="multipart/form-data">
-                <input type="file" name="avatar" id="avatar">
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
+          
         </div>
     </div>
 </div>
