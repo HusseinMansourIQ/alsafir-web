@@ -549,7 +549,7 @@ try{
                            const limit = 50;
                            const offset = (page - 1)*limit
                            
-                           let result = await Search.search_sent_names(req.body.search, req.body.avilability)
+                           let result = await Search.search_sent_names(req.body.search, req.body.avilability,offset,limit)
 
                            const totalItems = result.recordsets[0][0].TotalCount;
                            console.log(result.recordsets[1])
