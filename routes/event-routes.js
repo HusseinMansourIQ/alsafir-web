@@ -154,7 +154,7 @@ try{
         req.user.email,
         buffer)
         
-        res.json("okiiii")
+       res.redirect('/events/workers')
     }catch(err){
         console.log(err)
     }
@@ -178,12 +178,15 @@ try{
     router.post('/updateWorker',upload.single('image'),Roles.addition,async(req,res)=> {
 
       try{
+         let image
+         let buffer
 
          if (!req.file) {
-            return res.status(400).send('No file uploaded, bitch.');
-        }
-            const image = await Jimp.read(req.file.path);
-            const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+            buffer = await Search.get_w_image_by_id(req.body.w_id) 
+        }else{
+            image = await Jimp.read(req.file.path);
+            buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+      }
       
       
          await Update.update_worker(

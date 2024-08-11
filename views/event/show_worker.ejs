@@ -210,7 +210,7 @@
 
                 <div class="form-group">
                     <label for="location">الملاحضات</label>
-                    <textarea   name="w_note" id="w_note" class="form-control"><%=worker.w_note%></textarea>
+                    <input type="text"  value="<%=worker.w_note%>"  name="w_note" id="w_note" class="form-control">
                 </div>
 
                 
@@ -242,6 +242,7 @@
                     console.log()
                     const uploadedImage = document.getElementById('uploadedImage');
                     uploadedImage.src = `/events/get_w_image/${workerID}`;
+                    document.getElementById('image').value = "bwaaah";
 
 
                 });
