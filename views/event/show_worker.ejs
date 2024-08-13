@@ -17,8 +17,7 @@
     
                     <input type="hidden" name="w_id" id="w_id" value="<%=worker.w_id%>">
                     <input type="hidden" name="exper_id_1" id="exper_id_1" value="<%=exper[0].exper_id%>">
-                    <input type="hidden" name="exper_id_2" id="exper_id_2" value="<%=exper[1].exper_id%>">
-                    <input type="hidden" name="exper_id_3" id="exper_id_3" value="<%=exper[2].exper_id%>">
+                    
 
                     <div class="form-group">
                     <label for="title">تعديل الاسم</label>
@@ -160,54 +159,6 @@
                     
                 </div>
 
-                <div class="row">
-
-                    <div class="form-group col-md-4">
-                        <label for="location">الخبرة الثانية</label>
-                        <input type="text" name="exper_2" id="exper_2" value="<%=exper[1].exper_name%>" class="form-control">
-                    </div>
-                    
-                    <div class="form-group col-md-4">
-                        <label for="location">فترة العمل</label>
-                        <input type="text" name="time_2" id="time_2" value="<%=exper[1].exper_time%>" class="form-control">
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="location">المستوى</label>
-                        <select class="form-control" id="level_2" name="level_2">
-                            <option>جيد جدا</option>
-                            <option>جيد</option>
-                            <option>متوسط</option>
-                            
-                          </select>
-                    </div>
-                    
-                </div>
-
-                <div class="row">
-
-                    <div class="form-group col-md-4">
-                        <label for="location">الخبرة الثالثة</label>
-                        <input type="text" name="exper_3" id="exper_3" value="<%=exper[2].exper_name%>" class="form-control">
-                    </div>
-                    
-                    <div class="form-group col-md-4">
-                        <label for="location">فترة العمل</label>
-                        <input type="text" name="time_3" id="time_3" value="<%=exper[2].exper_time%>" class="form-control">
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="location">المستوى</label>
-                        <select class="form-control" id="level_3" name="level_3">
-                            <option>جيد جدا</option>
-                            <option>جيد</option>
-                            <option>متوسط</option>
-                            
-                          </select>
-                    </div>
-                    
-                </div>
-
                 <div class="form-group">
                     <label for="location">الملاحضات</label>
                     <input type="text"  value="<%=worker.w_note%>"  name="w_note" id="w_note" class="form-control">
@@ -235,8 +186,7 @@
 
 
                     document.getElementById('level_1').value ='<%=exper[0].exper_level%>';
-                    document.getElementById('level_2').value ='<%=exper[1].exper_level%>';
-                    document.getElementById('level_3').value ='<%=exper[2].exper_level%>';
+                   
 
                     const workerID = '<%=worker.w_id%>'
                     console.log()

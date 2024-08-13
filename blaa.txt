@@ -1,19 +1,2 @@
-	   
-begin
-	INSERT INTO [dbo].[tbl_exper]
-           ([w_id]
-           ,[exper_name]
-           ,[exper_level]
-           ,[exper_not]
-		   ,[exper_time])
- 
-    SELECT @DataID
-      ,[exper_name]
-      ,[exper_level]
-      ,[exper_not]
-	  ,[exper_time]
-    FROM @exper
-
-		   end
-
-COMMIT
+sp_insert_sent
+sp_search_sent

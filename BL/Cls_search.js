@@ -19,17 +19,24 @@ module.exports = {
         return result
     },
 
-    async  search_comp(param , avilability){
-        
-        let request = await dal.sql_open()
+    async  search_comp(param , avilability,offset,limit,){
+        try{
 
-        request.input('Param', sql.NVarChar, param)
-        request.input('avilability', sql.Int, avilability)
-
-        let result = await request.execute('sp_comp_search')
-        await dal.sql_close()
-
-        return result
+            let request = await dal.sql_open()
+            
+            request.input('Param', sql.NVarChar, param)
+            request.input('avilability', sql.Int, avilability)
+            request.input('Offset', sql.Int, offset)
+            request.input('PageSize', sql.Int, limit)
+          
+            
+            let result = await request.execute('sp_comp_search')
+            await dal.sql_close()
+            
+            return result
+        }catch(err){
+            console.log(err)
+        }
     },
 
     async get_all_jobs(offset,limit){

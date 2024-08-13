@@ -26,7 +26,7 @@ module.exports={
         request.input('exper',sql.TVP,exper);
         request.input('w_experiances',w_tel); // phone number registered as experiences to avoid conflict (in the data base field it still w_tel so its just for the stored procedure)
         request.input('avilability',sql.NVarChar, w_availablility);
-        request.input('w_note',sql.NVarChar, w_note);
+        request.input('w_note',sql.NVarChar(sql.MAX), w_note);
         request.input('User_whoInsert',sql.NVarChar, email);
         request.input('w_img',sql.VarBinary, image);
         
@@ -101,8 +101,8 @@ module.exports={
                     request.input('com_id',sql.Int, parseInt(com_id));
                     request.input('accept',sql.NVarChar,accept);
                     request.input('sent_nots',sql.NVarChar, sent_nots);
-                    request.input('sent_date',sql.Date, sent_date);
-                    request.input('accept_date',sql.Date, accept_date);
+                    request.input('sent_date',sql.Date, sent_date !== "" && sent_date !== "" ? sent_date : null);
+                    request.input('accept_date',sql.Date, accept_date !== "" && accept_date !== "" ? accept_date : null);
                     
                     
                    

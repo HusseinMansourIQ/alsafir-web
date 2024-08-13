@@ -9,7 +9,7 @@
 
     </div>
 
-    <form  action="/events/searchWorker" method="post">
+    <form  action="/events/searchWorker" method="get">
         <div class="row">
     
             <div class="form-group col-md-1">
@@ -25,16 +25,16 @@
             <div class="form-group col-md-2">
                 
                 <select class="form-control " id="w_avilability" name="w_avilability">
+                    <option value="3">الكل</option>
                     <option value="1">متوفر</option>
                     <option value="2">غير متوفر</option>
-                    <option value="3">الكل</option>
                     </select>
                 </div>
     
                 </div>
             </form>
 
-
+            <div class="table-responsive">
     <table class="table mydatatable table-hover w-120" style="margin-top: 20px;" >
 
         <tbody>
@@ -76,12 +76,12 @@
 
         </tbody>
     </table>
-
+</div>
 
     <nav aria-label="Page navigation" class="mt-3">
         <ul class="pagination">
             <li class="page-item <%= page === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Previous">
+                <a class="page-link" href="<%= search && w_avilability ? `?search=${search}&w_avilability =${w_avilability}&page=${page-1}` : `?page=${page-1}` %>" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -89,17 +89,22 @@
                 const maxVisibleButtons = 5;
                 const startPage = Math.max(1, page - Math.floor(maxVisibleButtons / 2));
                 const endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+                
             %>
             <% for (let i = startPage; i <= endPage; i++) { %>
                 <li class="page-item <%= page === i ? 'active' : '' %>">
-                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    <a class="page-link" href="<%= search && w_avilability ? `?search=${search}&w_avilability=${w_avilability}&page=${i}` : `?page=${i}` %>" aria-label="Next">
+                        <%= i %></a>
                 </li>
+
+                
             <% } %>
             <li class="page-item <%= page === totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Next">
+                <a class="page-link" href="<%= search && w_avilability ? `?search=${search}&w_avilability=${w_avilability}&page=${page+1}` : `?page=${page+1}` %>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
+            
         </ul>
     </nav>
 
