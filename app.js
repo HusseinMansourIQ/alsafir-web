@@ -6,6 +6,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
 const passportSetup = require('./config/passport-setup')
+require('dotenv').config();
 // bring ejs template
 
 app.set('view engine', 'ejs')
@@ -20,7 +21,7 @@ app.use(express.static('uploads'))
 app.use(express.static('node_modules'))
 // session and flash config .
 app.use(session({
-    secret: 'lorem ipsum',
+    secret: 'oievn0598jve0%i9vmnD#d09jv&0d9jv0@#e9j53pioo43mv09j',
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: 60000 * 15}
@@ -36,11 +37,7 @@ app.get('*', (req,res,next)=> {
     next()
 })
 
-app.get('/', (req,res)=> {
 
-   res.redirect('/events/Workers')
-    
-})
 
 // bring events routes
 
@@ -51,8 +48,8 @@ app.use('/events', events)
 const users = require('./routes/user-routes')
 app.use('/users', users)
 // have fun games route
-const hv = require('./routes/hv-routes')
-app.use('/hv', hv)
+const client = require('./routes/client-routes')
+app.use('/', client)
 // listen to port 3000
 
 app.listen(3000, ()=> {
