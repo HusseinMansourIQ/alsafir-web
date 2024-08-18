@@ -113,5 +113,39 @@ module.exports={
                     console.log(err)
                 }
                     
-                }
+            },
+                
+                async insert_client(c_name,c_tel,c_address, c_birth_date, c_study1,  c_social_status, c_sex, c_note,c_exper_name,c_is_job,c_job_id, image){
+
+    let request =await Dal.sql_open()
+    request.input('c_name',sql.NVarChar, c_name);
+    request.input('c_addres',sql.NVarChar,c_address);
+    request.input('c_id_type',sql.NVarChar, "c_id_type");
+    request.input('c_id_no',sql.NVarChar, "c_id_no");
+    request.input('c_pirthdate',sql.NVarChar, c_birth_date);
+    request.input('c_study1',sql.NVarChar, c_study1);
+    request.input('c_study2',sql.NVarChar, "c_study2");
+    request.input('c_sex',sql.NVarChar, c_sex);
+    request.input('c_graduate_date1',sql.NVarChar, "grad1");
+    request.input('c_graduate_date2',sql.NVarChar, "grad2");
+    request.input('c_exper_name',sql.NVarChar, c_exper_name);
+    request.input('c_exper_time',sql.NVarChar, "exper_time");
+    request.input('c_exper_level',sql.NVarChar, "exper_time");
+    request.input('c_is_job',sql.NVarChar, c_is_job);
+    request.input('job_id',sql.Int,Number(c_job_id));
+    request.input('c_tel',c_tel); 
+    request.input('c_note',sql.NVarChar(sql.MAX), c_note);
+    request.input('c_status',sql.NVarChar, c_social_status);
+    request.input('c_img',sql.VarBinary, image);
+    
+        let result = await request.execute('sp_insert_client');
+        await Dal.sql_close()
+        
+        
+        
+        
+        
+        
+        
+    },
 }

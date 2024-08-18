@@ -1,4 +1,4 @@
-const sql = require('mssql/msnodesqlv8')
+const sql = require('mssql')
 const Dal = require('../DAL/dal')
 const dal = require('../DAL/dal')
 
@@ -37,6 +37,21 @@ module.exports = {
         }catch(err){
             console.log(err)
         }
+    },
+
+    async  search_client(param , avilability , offset,limit){
+        
+        let request = await dal.sql_open()
+
+        request.input('Param', sql.NVarChar, param)
+        request.input('c_is_job', sql.NVarChar, avilability)
+        request.input('Offset', sql.Int, offset)
+        request.input('PageSize', sql.Int, limit)
+
+        let result = await request.execute('sp_search_client')
+        await dal.sql_close()
+
+        return result
     },
 
     async get_all_jobs(offset,limit){
@@ -159,6 +174,38 @@ module.exports = {
         request.input('w_id', sql.Int,Number(w_id))
        
         let result = await request.execute('sp_get_w_image_by_id')
+        await dal.sql_close()
+        return result
+    },
+    
+    async get_available_comps(){
+
+        let request = await dal.sql_open()
+       
+        let result = await request.execute('sp_get_available_comps')
+        await dal.sql_close()
+        return result
+    },
+
+    async get_clients(offset,limit){
+
+        let request = await dal.sql_open()
+
+        request.input('Offset', sql.Int, offset)
+        request.input('PageSize', sql.Int, limit)
+        
+        let result = await request.execute('sp_get_clients')
+        await dal.sql_close()
+        return result
+    },
+
+    async get_client_by_id(c_id){
+
+        let request = await dal.sql_open()
+
+        request.input('c_id', sql.Int, c_id)
+        
+        let result = await request.execute('sp_get_client_by_id')
         await dal.sql_close()
         return result
     },

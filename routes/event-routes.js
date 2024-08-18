@@ -11,8 +11,6 @@ const moment = require('moment');
 const sql = require('mssql/msnodesqlv8')
 const Jimp = require('jimp');
 const multer = require('multer');
-const { search_job } = require("../BL/Cls_search")
-const { sortData } = require("../public/js/sort")
 moment().format();
 const upload = multer({ dest: 'uploads/' });
 
@@ -50,7 +48,7 @@ router.get('/workers' ,isAuthenticated, Roles.lists, async(req,res)=> {
         page : page,
         totalPages : totalPages,
         search : "",
-        c_avilability: ""
+        w_avilability:3
        })
        Dal.sql_close()
        console.log(page + " this is page")
@@ -116,8 +114,6 @@ router.post('/addWorker',upload.single('image'),Roles.addition,async(req,res,nex
      
      image = await Jimp.read(req.file.path);
   }
-  
-  
       const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
   
 
@@ -341,7 +337,7 @@ try{
             jobs : result.recordsets[1],
             page : page,
             totalPages : totalPages,
-            j_avilability : "",
+            j_avilability: 3,
             search : ""
            })
            console.log(res.locals.user.role + " this is role ")
@@ -442,18 +438,15 @@ try{
                    let result = await Search.get_all_comps(offset,limit)
                    
                    const totalItems = result.recordsets[0][0].TotalCount;
-                   //console.log(result.recordsets[1])
                    const totalPages = Math.ceil(totalItems / limit);
                   
-
-                   
-                   
+  
                    res.render('event/comps_list.ejs',{
                     comps : result.recordsets[1],
                     page : page,
                     totalPages : totalPages,
                     search : "",
-                    c_avilability: ""
+                    c_avilability:3
                     
                    })
                     
@@ -556,7 +549,7 @@ try{
                             moment : moment,
                             page : page,
                             totalPages : totalPages,
-                            avilability: "",
+                            avilability:"الكل",
                             search: ""
                            })
                             
@@ -660,4 +653,79 @@ try{
                          }
                      })
 
+
+
+                     router.get('/pendingNames_list',isAuthenticated,Roles.lists, async(req,res)=> {
+                        try{
+                          
+                             const page =  parseInt(req.query.page) || 1;
+                             const limit = 50;
+                             const offset = (page - 1)*limit
+        
+                           let result = await Search.get_clients(offset,limit)
+                           
+                           const totalItems = result.recordsets[0][0].TotalCount;
+                           const totalPages = Math.ceil(totalItems / limit);
+                          
+          
+                           res.render('event/pendingNames_list.ejs',{
+                            clients : result.recordsets[1],
+                            page : page,
+                            totalPages : totalPages,
+                            search : "",
+                            c_is_job: "الكل"
+                            
+                           })
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+
+                     router.get('/searchPendingName',Roles.lists, async(req,res)=> {
+                        try{
+                           res.locals.user= ""
+                        
+                           const page =  parseInt(req.query.page) || 1;
+                           const limit = 5;
+                           const offset = (page - 1)*limit
+                         
+                           
+                           let result = await Search.search_client("%"+req.query.search+"%" , req.query.c_is_job, offset, limit)
+                           
+                           const totalItems = result.recordsets[0][0].TotalCount;
+                           console.log(result.recordsets[1])
+                           console.log(req.query.c_is_job)
+
+                           const totalPages = Math.ceil(totalItems / limit); 
+                
+                           res.render('event/pendingNames_list.ejs',{
+                            clients : result.recordsets[1],
+                            page : page,
+                            totalPages : totalPages,
+                            c_is_job: req.query.c_is_job,
+                            search: req.query.search || "%%"
+                           })
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+                     router.get('/showPendingName/:id',Roles.lists, async(req,res)=> {
+                        try{
+
+                           let result = await Search.get_client_by_id(req.params.id)
+
+                           res.render('event/show_pendingName.ejs',{
+                            clients : result.recordset,
+                           })
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+                    
 module.exports = router

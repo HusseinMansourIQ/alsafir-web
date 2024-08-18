@@ -1,0 +1,159 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <form  action="/events/updateWorker" method="post"  enctype="multipart/form-data">
+                <img id="uploadedImage" name="uploadedImage" height="150px" width="150px">
+                <input type="file" class="form-control" name="image" id="image" aria-describedby="basic-addon1" >
+                <hr>
+            </div>
+            <div class="col-md-6 offset-md-1">
+                <h1 class="display-4">اضافة اسم</h1>
+                <hr>
+                
+                <%- include('../partials/flashMessages') -%>  
+                <% client.forEach((client)=> {%>
+    
+                    <input type="hidden" name="w_id" id="w_id" value="<%=worker.w_id%>">
+                    <input type="hidden" name="exper_id_1" id="exper_id_1" value="<%=exper[0].exper_id%>">
+                    
+                        <!-- Name input-->
+                        <div class="form-group">
+                            <label for="title">الاسم الثلاثي</label>
+                            <input type="text" name="c_name" id="c_name" class="form-control">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="title">رقم الهاتف</label>
+                            <input type="text" name="c_tel" id="c_tel" class="form-control">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="c_address">العنوان</label>
+                            <input type="text" name="c_address" id="c_address" class="form-control" required>
+                            <div class="invalid-feedback">
+                                يرجى إدخال العنوان.
+                            </div>
+                        </div>
+        
+        
+                                    
+                                    
+                        <div class="form-group">
+                            <label for="location">تاريخ الولادة</label>
+                            <input type="text" name="c_birth_Date" id="c_birth_Date" class="form-control">
+                        </div>
+                      
+        
+                            <div class="form-group ">
+                                <label for="location">التحصيل الدراسي </label>
+                                <input type="text" name="c_study1" id="c_study1" class="form-control">
+                            </div>
+                            
+                           
+                            
+                        <div class="row">
+        
+                           
+                        </div>
+                     
+                        <div class="row">
+        
+                            <div class="col-md-6 ">
+                                <label for="location">الحالة الاجتماعية</label>
+                                <select class="form-control" id="c_social_status" name="c_social_status">
+                                    <option>متزوج/متزوجة</option>
+                                    <option>اعزب</option>
+                                    <option>متزوج</option>
+                                    <option>مطلق</option>
+                                    <option>باكر</option>
+                                    <option>ارمل</option>
+                                    <option>متزوجة</option>
+                                    <option>مطلقة</option>
+                                    <option>ارملة</option>
+                                    <option>باكرة</option>
+                                  </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="location">الجنس</label>
+                                <select class="form-control" id="c_sex" name="c_sex">
+                                    <option>ذكر</option>
+                                    <option>انثى</option>
+                                    
+                                  </select>
+                            </div>
+                        </div>
+        
+                            
+                           
+                  
+        
+                        <hr>
+        
+                        <div class="row">
+        
+                            <div class="form-group">
+                                <label for="location">الخبرات</label>
+                                <input type="text" name="exper_name" id="exper_name" class="form-control">
+                            </div>
+                            
+                        
+        
+                       
+                        <div class="form-group">
+                            <label for="location">الملاحضات</label>
+                            <input  type="text" name="c_note" id="c_note" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">صورة شخصية</label>
+                            <input  type="file" name="image" id="image" class="form-control">
+                        </div>
+        
+                        
+        
+                         <input type="hidden" name="isJob" id="isJob" value="كلا">
+                         <input type="hidden" name="job_id" id="job_id" value="0">
+
+                        <div class="d-grid"><button class="btn btn-primary btn-lg"  type="submit">أرسال</button></div>
+        
+                        </div>
+                    </form>
+            <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
+                 
+                  
+                 
+                    document.getElementById('w_id_type').value ='<%=worker.w_id_type%>';
+                    document.getElementById('w_social_status').value ='<%=worker.w_status%>';
+                    document.getElementById('w_sex').value ='<%=worker.w_sex%>';
+                    document.getElementById('w_availablility').value ='<%=worker.avilability%>';
+
+
+                    document.getElementById('level_1').value ='<%=exper[0].exper_level%>';
+                   
+
+                    const workerID = '<%=worker.w_id%>'
+                    console.log()
+                    const uploadedImage = document.getElementById('uploadedImage');
+                    uploadedImage.src = `/events/get_w_image/${workerID}`;
+                    document.getElementById('image').value = "bwaaah";
+
+
+                });
+            </script>
+
+            <%})%>
+        </div>
+
+        
+
+    </div>
+    
+    
+</div>
+
+    
+<%- include('../partials/footer') -%>

@@ -50,7 +50,7 @@ app.use('/users', users)
 // have fun games route
 const client = require('./routes/client-routes')
 app.use('/', client)
-// listen to port 3000
+
 
 app.listen(3000, ()=> {
     console.log(' app is wokring on port 3000')

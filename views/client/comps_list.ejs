@@ -1,0 +1,41 @@
+<%- include('../partials/client_header') -%>
+<%- include('../partials/client_navbar') -%>
+<div class="container">
+  
+    <div class="row mt-3">
+<div class="col md-12">
+    <%- include('../partials/flashMessages') -%>
+</div>      
+    
+    </div>
+
+    
+    
+
+
+   
+    <% chunk.forEach((comps)=> {%>
+        <div class="row mt-3">
+    
+       
+            <% comps.forEach((comp)=> {%>
+              <div class="col-sm-6 col-md-4">
+                  <div class="card">
+                      
+                      <div class="card-body">
+                        <h5 class="card-title text-end"><%= comp.com_name%></h5>
+                        <p class="card-text text-end"><%= comp.comp_addres%></p>
+                        <p class="text-end"><%= comp.comp_type%></p>
+                        <a href="<%=  '/sendJobReq/'  + comp.com_id %>" class="btn btn-primary">ارسال طلب</a>
+                      </div>
+                    </div>
+              </div>
+              <%})%>
+        </div>
+    
+      <%})%>
+
+
+
+
+<%- include('../partials/footer') -%>

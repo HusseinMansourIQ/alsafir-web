@@ -9,7 +9,7 @@
 
     </div>
 
-    <form  action="/events/searchWorker" method="get">
+    <form  action="/events/searchPendingName" method="get">
         <div class="row">
     
             <div class="form-group col-md-1">
@@ -24,10 +24,10 @@
     
             <div class="form-group col-md-2">
                 
-                <select class="form-control " id="w_avilability" name="w_avilability">
-                    <option value="3">الكل</option>
-                    <option value="1">متوفر</option>
-                    <option value="2">غير متوفر</option>
+                <select class="form-control " id="c_is_job" name="c_is_job">
+                    <option value="الكل">الكل</option>
+                    <option value="نعم">وضيفة</option>
+                    <option value="كلا">عام</option>
                     </select>
                 </div>
     
@@ -43,31 +43,29 @@
             <td>الاسم</td>
             <td>العنوان</td>
             <td>رقم الهاتف</td>
-            <td>الحالة</td>
-            <td>الاجور</td>
-            <td>رقم الهوية</td>
-            <td>نوع الهوية</td>
+            <td>تاريخ الميلاد</td>
+            <td>التحصيل الدراسي</td>
             <td>المهارة</td>
-            <td>ارسال</td>
+            <td>وضيفة؟</td>
+            <td>قبول</td>
             <td>حذف</td>
 
         </tr>
-        <% workers.forEach((worker)=> {%>
+        <% clients.forEach((client)=> {%>
 
             <tr>
-                <td class=""><%=worker.id%></td>
+                <td class=""><%=client.c_id%></td>
 
-                <td> <a href="<%=  '/events/showWorker/' + worker.id %>" style="text-decoration: unset;color: black;"><%=worker.w_name%></a></td>
-                <td><%=worker.w_addres%></td>
-                <td><%=worker.w_tel%></td>
-                <td><%=worker.avilability%></td>
-                <td><%=worker.w_study3%></td>
-                <td><%=worker.id_no%></td>
-                <td><%=worker.id_type%></td>
-                <td><%=worker.exper_name%></td>
-                <td><a href="<%=  '/events/sendWorker/' + worker.id + '/' + worker.w_name%>" class="btn btn-primary"  style="padding: 0 0 0 0 !important
-     ;margin: -2.5px auto -2px auto !important;"> ارسال </a></td>
-                <td><a href="<%=  '/events/deleteWorker/' + worker.id%>" class="btn btn-danger"  style="padding: 0 0 0 0 !important
+                <td> <a href="<%=  '/events/showPendingName/' + client.c_id %>" style="text-decoration: unset;color: black;"><%=client.c_name%></a></td>
+                <td><%=client.c_addres%></td>
+                <td><%=client.c_tel%></td>
+                <td><%=client.c_pirthdate%></td>
+                <td><%=client.c_study1%></td>
+                <td><%=client.c_exper_name%></td>
+                <td><%=client.c_is_job%></td>
+                <td><a href="<%=  '/events/acceptWorker/' + client.c_id %>" class="btn btn-primary"  style="padding: 0 0 0 0 !important
+     ;margin: -2.5px auto -2px auto !important;"> قبول </a></td>
+                <td><a href="<%=  '/events/deleteClient/' + client.c_id%>" class="btn btn-danger"  style="padding: 0 0 0 0 !important
      ;margin: -2.5px auto -2px auto !important;"> حذف </a></td>
 
 
@@ -81,7 +79,7 @@
     <nav aria-label="Page navigation" class="mt-3">
         <ul class="pagination">
             <li class="page-item <%= page === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="<%= search && w_avilability ? `?search=${search}&w_avilability =${w_avilability}&page=${page-1}` : `?page=${page-1}` %>" aria-label="Previous">
+                <a class="page-link" href="<%= search && c_is_job ? `?search=${search}&c_is_job =${c_is_job}&page=${page-1}` : `?page=${page-1}` %>" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -93,24 +91,19 @@
             %>
             <% for (let i = startPage; i <= endPage; i++) { %>
                 <li class="page-item <%= page === i ? 'active' : '' %>">
-                    <a class="page-link" href="<%= search && w_avilability ? `?search=${search}&w_avilability=${w_avilability}&page=${i}` : `?page=${i}` %>" aria-label="Next">
+                    <a class="page-link" href="<%= search && c_is_job ? `?search=${search}&c_is_job=${c_is_job}&page=${i}` : `?page=${i}` %>" aria-label="Next">
                         <%= i %></a>
                 </li>
 
                 
             <% } %>
             <li class="page-item <%= page === totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="<%= search && w_avilability ? `?search=${search}&w_avilability=${w_avilability}&page=${page+1}` : `?page=${page+1}` %>" aria-label="Next">
+                <a class="page-link" href="<%= search && c_is_job ? `?search=${search}&c_is_job=${c_is_job}&page=${page+1}` : `?page=${page+1}` %>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
             
         </ul>
     </nav>
-
-    <script>
-        document.getElementById('w_avilability').value ='<%=w_avilability%>';
-
-</script>
 
 <%- include('../partials/footer') -%>

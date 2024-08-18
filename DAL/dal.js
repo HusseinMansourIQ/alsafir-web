@@ -1,17 +1,23 @@
-const sql = require('mssql/msnodesqlv8')
+const { max } = require('moment');
+const sql = require('mssql')
 let pool
 module.exports = {
     
     connectionConfig : {
         
-        server: 'DESKTOP-PUAF950\\SQLEXPRESS01', // Double backslash to escape backslash in string
-        database: 'jops',
-        options: {
-            trustedConnection: true, // Use integrated security
-            enableArithAbort: true, // Option to enable arithmetic abort (recommended for some SQL Server versions)
-            trustServerCertificate: true // Use if you are connecting to a local server with a self-signed certificate
+        server: process.env.SERVER, // Double backslash to escape backslash in string
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE,
+        pool: {
+           max:10,
+           min:0,
+           idleTimeoutMillis:3000
         },
-         driver: "msnodesqlv8"
+        options: {
+            trustServerCertificate: true 
+        }
+         
     },
     
         
