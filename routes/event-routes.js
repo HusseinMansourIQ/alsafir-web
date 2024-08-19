@@ -624,7 +624,6 @@ try{
                      router.get('/showSent/:sent_id/:w_id',isAuthenticated,Roles.lists, async(req,res)=> {
                         try{
                            let result = await Search.get_sent_by_id(req.params.w_id , req.params.sent_id)
-                           console.log(result)
                            res.render('event/show_sent.ejs',{
                             name: result.recordset,
                             moment: moment
@@ -688,7 +687,7 @@ try{
                            res.locals.user= ""
                         
                            const page =  parseInt(req.query.page) || 1;
-                           const limit = 5;
+                           const limit = 50;
                            const offset = (page - 1)*limit
                          
                            
@@ -713,15 +712,88 @@ try{
                          }
                      })
 
-                     router.get('/showPendingName/:id',Roles.lists, async(req,res)=> {
+
+                     router.get('/showPendingName/:id',isAuthenticated,Roles.lists, async(req,res)=> {
                         try{
-
+                           let j_data = "لا يوجد"
                            let result = await Search.get_client_by_id(req.params.id)
+                           result.recordset[0].c_job_id == 0? j_data =  "لا يوجد" : j_data = await Search.show_job(result.recordset[0].c_job_id)
+                          
+                           res.render('event/show_client.ejs',{
+                            client : result.recordset[0],
+                            job_name : j_data == "لا يوجد" ? "لا يوجد" : j_data[0].jop_name,
+                            job_id : j_data == "لا يوجد" ? "لا يوجد" : j_data[0].jop_id 
 
-                           res.render('event/show_pendingName.ejs',{
-                            clients : result.recordset,
                            })
                             
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+
+
+                     
+                     router.get('/acceptWorker/:id', isAuthenticated,async(req,res)=> {
+                        try{
+                           let client = await Search.get_client_by_id(req.params.id)
+                           
+                           const data = [
+                              { exper_name: client.recordset[0].c_exper_name, exper_level: " ",exper_time :" "},
+                          ];
+                      
+                          console.log(req.body.w_note + " this is notes from add worker post ")
+                      
+                          // Define the table type parameter
+                          const exper = new sql.Table('dbo.exper_TableType7_new');
+                          exper.columns.add('exper_name', sql.NVarChar(50));
+                          exper.columns.add('exper_level', sql.NVarChar(50));
+                          exper.columns.add('exper_not', sql.NVarChar(256));
+                          exper.columns.add('exper_time', sql.NVarChar(50));
+                      
+                          // Add rows to the table type parameter
+                          data.forEach(row => {
+                              exper.rows.add(row.exper_name, row.exper_level,"", row.exper_time);
+                          });
+                      
+                          console.log(exper)
+                         await Insert.insert_worker(
+                              client.recordset[0].c_name,
+                              client.recordset[0].c_tel,
+                              client.recordset[0].c_addres,
+                              "نوع الهوية",
+                              "رقم الهوية",
+                              client.recordset[0].c_pirthdate,
+                              client.recordset[0].c_study1,
+                              "graduation",
+                              "study_2",
+                              "graduation_2",
+                              "الراتب",
+                              client.recordset[0].c_status,
+                              client.recordset[0].c_sex,
+                              "متوفر",
+                              client.recordset[0].c_job_id,
+                              exper,
+                              req.user.email,
+                              client.recordset[0].c_img)
+
+                              await Delete.delete_client(client.recordset[0].c_id)
+                              
+                             res.redirect('/events/workers')
+                            
+                         }catch(err){
+                            console.log(err)
+                         }
+                     })
+
+
+                     
+                     router.get('/deleteClient/:id', isAuthenticated,async(req,res)=> {
+                        try{
+
+                           await Delete.delete_client(req.params.id)
+                           res.redirect('/events/pendingNames_list')
+
                          }catch(err){
                             console.log(err)
                          }

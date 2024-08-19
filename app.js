@@ -6,10 +6,13 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
 const passportSetup = require('./config/passport-setup')
+const path = require('path');
+
 require('dotenv').config();
 // bring ejs template
 
 app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'));
 // bring body parser 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

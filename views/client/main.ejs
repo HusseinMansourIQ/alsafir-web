@@ -11,7 +11,7 @@
                             <p class="lead text-white-50 mb-4">انضم لأفضل الفرص!  تساعدك على العثور على الوظيفة المثالية بسرعة واحترافية.</p>
                             <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
                                 <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#contact">ارسل معلوماتك ودعنا نتواصل معك</a>
-                                <a class="btn btn-outline-light btn-lg px-4" href="#!">قائمة الوضائف</a>
+                                <a class="btn btn-outline-light btn-lg px-4" href="/jobs_list">قائمة الوضائف</a>
                             </div>
                         </div>
                     </div>
@@ -94,24 +94,25 @@
                     <%- include('../partials/flashMessages') -%>      
 
                     <div class="col-lg-6">
-                        <form  action="/addClientForm" method="post"  enctype="multipart/form-data" novalidate>
+                        <form  action="/addClientForm" method="post"  enctype="multipart/form-data" >
                             <!-- Name input-->
                             <div class="form-group">
                                 <label for="title">أدخل الاسم الثلاثي</label>
-                                <input type="text" name="c_name" id="c_name" class="form-control">
+                                <input type="text" name="c_name" id="c_name" class="form-control" required/>
+                                
+                                    
+                               
                             </div>
             
                             <div class="form-group">
                                 <label for="title">رقم الهاتف</label>
-                                <input type="text" name="c_tel" id="c_tel" class="form-control">
+                                <input type="text" name="c_tel" id="c_tel" class="form-control" required>
                             </div>
             
                             <div class="form-group">
                                 <label for="c_address">العنوان</label>
-                                <input type="text" name="c_address" id="c_address" class="form-control" required>
-                                <div class="invalid-feedback">
-                                    يرجى إدخال العنوان.
-                                </div>
+                                <input type="text" name="c_address" id="c_address" class="form-control">
+                                
                             </div>
             
             
@@ -203,5 +204,5 @@
             </div>
         </section>
         <!-- Footer-->
-      
+     
         <%- include('../partials/client_footer') -%>

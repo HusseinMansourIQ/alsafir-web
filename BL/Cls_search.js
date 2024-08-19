@@ -83,7 +83,7 @@ module.exports = {
         
         let request = await dal.sql_open()
 
-        request.input('jid', sql.NVarChar, param)
+        request.input('jid', sql.NVarChar, Number(param))
         
 
         let result = await request.execute('sp_get_j_by_id')
@@ -203,7 +203,7 @@ module.exports = {
 
         let request = await dal.sql_open()
 
-        request.input('c_id', sql.Int, c_id)
+        request.input('c_id', sql.Int,Number(c_id))
         
         let result = await request.execute('sp_get_client_by_id')
         await dal.sql_close()

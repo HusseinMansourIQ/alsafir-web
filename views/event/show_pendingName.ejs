@@ -1,4 +1,4 @@
-<%- include('../partials/header') -%>
+<%-include('../partials/header')-%>
 <%- include('../partials/navbar') -%>
 <div class="container">
     <div class="row mt-4">
@@ -13,10 +13,8 @@
                 <hr>
                 
                 <%- include('../partials/flashMessages') -%>  
-                <% client.forEach((client)=> {%>
     
-                    <input type="hidden" name="w_id" id="w_id" value="<%=worker.w_id%>">
-                    <input type="hidden" name="exper_id_1" id="exper_id_1" value="<%=exper[0].exper_id%>">
+                    <input type="hidden" name="c_id" id="c_id" >
                     
                         <!-- Name input-->
                         <div class="form-group">
@@ -122,30 +120,9 @@
                         </div>
                     </form>
             <script>
-                document.addEventListener('DOMContentLoaded', (event) => {
-                 
-                  
-                 
-                    document.getElementById('w_id_type').value ='<%=worker.w_id_type%>';
-                    document.getElementById('w_social_status').value ='<%=worker.w_status%>';
-                    document.getElementById('w_sex').value ='<%=worker.w_sex%>';
-                    document.getElementById('w_availablility').value ='<%=worker.avilability%>';
-
-
-                    document.getElementById('level_1').value ='<%=exper[0].exper_level%>';
-                   
-
-                    const workerID = '<%=worker.w_id%>'
-                    console.log()
-                    const uploadedImage = document.getElementById('uploadedImage');
-                    uploadedImage.src = `/events/get_w_image/${workerID}`;
-                    document.getElementById('image').value = "bwaaah";
-
-
-                });
+               
             </script>
 
-            <%})%>
         </div>
 
         

@@ -13,23 +13,34 @@ router.get('/', (req,res)=>{
     res.render('client/main')
 })
 
-router.get('/clients', async(req,res)=>{
-    let result = await Search.get_clients()
-    res.json(result.recordset)
+router.get('/sendJobReq/:id', (req,res)=>{
+    res.render('client/sendJobReq',{
+        job_id: req.params.id
+    })
 })
 
-router.get('/comps_list',async(req,res)=>{
+router.get('/jobs_list',async(req,res)=>{
     
-    let result = await Search.get_available_comps()
+    const page =  parseInt(req.query.page) || 1;
+    const limit = 9;
+    const offset = (page - 1)*limit
+
+    let result = await Search.search_job("%%",1,offset,limit)
+    
+    const totalItems = result.recordsets[0][0].TotalCount;
+    const totalPages = Math.ceil(totalItems / limit); 
 
         let chunk = []
         let chunkSize = 3
-        for (let i =0 ; i < result.recordset.length ; i+=chunkSize) {
-        chunk.push(result.recordset.slice( i, chunkSize + i))
+        for (let i =0 ; i < result.recordsets[1].length ; i+=chunkSize) {
+        chunk.push(result.recordsets[1].slice( i, chunkSize + i))
         }
+        console.log(chunk)
 
-    res.render('client/comps_list',{
-        chunk: chunk
+    res.render('client/jobs_list',{
+        chunk: chunk,
+        totalPages: totalPages,
+        page: page 
         })
 })
 

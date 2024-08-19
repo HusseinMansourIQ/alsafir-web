@@ -1,0 +1,119 @@
+<%- include('../partials/client_header') -%>
+<%- include('../partials/client_navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-6 ">
+            <%- include('../partials/flashMessages') -%>      
+
+            <h1 class="display-4">أرسال طلب</h1>
+            <hr>
+    
+            <form  action="/addClientForm" method="post"  enctype="multipart/form-data" novalidate>
+            <!-- Name input-->
+            <div class="form-group">
+                <label for="title">أدخل الاسم الثلاثي</label>
+                <input type="text" name="c_name" id="c_name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="title">رقم الهاتف</label>
+                <input type="text" name="c_tel" id="c_tel" class="form-control"required>
+            </div>
+
+            <div class="form-group">
+                <label for="c_address">العنوان</label>
+                <input type="text" name="c_address" id="c_address" class="form-control" >
+                <div class="invalid-feedback">
+                    يرجى إدخال العنوان.
+                </div>
+            </div>
+
+
+                        
+                        
+            <div class="form-group">
+                <label for="location">تاريخ الولادة</label>
+                <input type="text" name="c_birth_Date" id="c_birth_Date" class="form-control">
+            </div>
+          
+
+                <div class="form-group ">
+                    <label for="location">التحصيل الدراسي </label>
+                    <input type="text" name="c_study1" id="c_study1" class="form-control">
+                </div>
+                
+               
+                
+            <div class="row">
+
+               
+            </div>
+         
+            <div class="row">
+
+                <div class="col-md-6 ">
+                    <label for="location">الحالة الاجتماعية</label>
+                    <select class="form-control" id="c_social_status" name="c_social_status">
+                        <option>متزوج/متزوجة</option>
+                        <option>اعزب</option>
+                        <option>متزوج</option>
+                        <option>مطلق</option>
+                        <option>باكر</option>
+                        <option>ارمل</option>
+                        <option>متزوجة</option>
+                        <option>مطلقة</option>
+                        <option>ارملة</option>
+                        <option>باكرة</option>
+                      </select>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="location">الجنس</label>
+                    <select class="form-control" id="c_sex" name="c_sex">
+                        <option>ذكر</option>
+                        <option>انثى</option>
+                        
+                      </select>
+                </div>
+            </div>
+
+                
+               
+      
+
+            <hr>
+
+            <div class="row">
+
+                <div class="form-group">
+                    <label for="location">الخبرات</label>
+                    <input type="text" name="exper_name" id="exper_name" class="form-control">
+                </div>
+                
+            
+
+           
+            <div class="form-group">
+                <label for="location">الملاحضات</label>
+                <input  type="text" name="c_note" id="c_note" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="location">صورة شخصية</label>
+                <input  type="file" name="image" id="image" class="form-control">
+            </div>
+
+            
+
+             <input type="hidden" name="isJob" id="isJob" value="نعم">
+             <input type="hidden" name="job_id" id="job_id" value="<%=job_id%>">
+
+            <div class="d-grid"><button class="btn btn-primary btn-lg"  type="submit">أرسال</button></div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') -%>
