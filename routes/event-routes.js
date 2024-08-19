@@ -170,9 +170,21 @@ try{
       try{
          let result = await Search.get_w_image_by_id(req.params.id)
          const imageData = result.recordset[0].w_img
-         console.log(typeof(imageData))
          res.setHeader('Content-Type', 'image/png');
-        res.send(imageData);
+         res.send(imageData);
+          
+       }catch(err){
+          console.log(err)
+       }
+   })
+
+
+   router.get('/get_c_image/:id',isAuthenticated,Roles.lists, async(req,res)=> {
+      try{
+         let result = await Search.get_c_image_by_id(req.params.id)
+         const imageData = result.recordset[0].c_img
+         res.setHeader('Content-Type', 'image/png');
+         res.send(imageData);
           
        }catch(err){
           console.log(err)
@@ -718,11 +730,10 @@ try{
                            let j_data = "لا يوجد"
                            let result = await Search.get_client_by_id(req.params.id)
                            result.recordset[0].c_job_id == 0? j_data =  "لا يوجد" : j_data = await Search.show_job(result.recordset[0].c_job_id)
-                          
                            res.render('event/show_client.ejs',{
                             client : result.recordset[0],
-                            job_name : j_data == "لا يوجد" ? "لا يوجد" : j_data[0].jop_name,
-                            job_id : j_data == "لا يوجد" ? "لا يوجد" : j_data[0].jop_id 
+                            job_name : j_data == "لا يوجد" ? "لا يوجد" : j_data.recordset[0].jop_name,
+                            job_id : j_data == "لا يوجد" ? "لا يوجد" : j_data.recordset[0].jop_id 
 
                            })
                             

@@ -158,6 +158,15 @@ module.exports = {
         return result
     },
 
+    async get_c_image_by_id(c_id){
+
+        let request = await dal.sql_open()
+        request.input('c_id', sql.Int,Number(c_id))
+        let result = await request.execute('sp_get_c_img_by_id')
+        await dal.sql_close()
+        return result
+    },
+
     async get_w_exper_by_id(w_id ){
 
         let request = await dal.sql_open()
