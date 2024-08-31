@@ -52,7 +52,7 @@
             %>
             <% for (let i = startPage; i <= endPage; i++) { %>
                 <li class="page-item <%= page === i ? 'active' : '' %>">
-                    <a class="page-link" href="?<%=`page=${page}` %>" aria-label="Next">
+                    <a class="page-link" href="?<%=`page=${i}` %>" aria-label="Next">
                         <%= i %></a>
                 </li>
 

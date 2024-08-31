@@ -48,7 +48,8 @@ router.get('/workers' ,isAuthenticated, Roles.lists, async(req,res)=> {
         page : page,
         totalPages : totalPages,
         search : "",
-        w_avilability:3
+        w_avilability:3,
+        message: req.flash('info')
        })
        Dal.sql_close()
        console.log(page + " this is page")
@@ -157,7 +158,8 @@ try{
         exper,
         req.user.email,
         buffer)
-        
+
+       req.flash('info', ' The event was created successfuly')
        res.redirect('/events/workers')
     }catch(err){
         console.log(err)
@@ -309,7 +311,7 @@ try{
            res.locals.user= ""
         
            const page =  parseInt(req.query.page) || 1;
-           const limit = 5;
+           const limit = 50;
            const offset = (page - 1)*limit
          
            
@@ -335,7 +337,7 @@ try{
      router.get('/jobs_list',isAuthenticated, async(req,res)=> {
         try{
          const page =  parseInt(req.query.page) || 1;
-         const limit = 5;
+         const limit = 50;
    
          const offset = (page - 1)*limit
          
