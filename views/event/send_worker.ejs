@@ -1,5 +1,7 @@
 <%- include('../partials/header') -%>
 <%- include('../partials/navbar') -%>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <div class="container">
     <div class="row mt-4">
         
@@ -62,7 +64,31 @@
 
     </div>
     
-    
+    <script>
+        const inputField = document.getElementById('com_id');
+        let typingTimer;                // Timer identifier
+        const doneTypingInterval = 1000; // Time in ms (1 second)
+
+        // On keyup, start the countdown
+        inputField.addEventListener('input', () => {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        });
+        
+
+        // User is "finished typing," do something
+        async function  doneTyping() {
+         const comId = document.getElementById('com_id').value;
+         const result = await axios.get(`/events/showCompJson/${comId}`)
+         console.log(result.data)
+            if(result.data == "invalid_ID"){
+                alert("ID الشركة غير صحيح")
+            }else{
+                alert(result.data[0].com_name)
+                console.log(result.data)
+            }
+        }
+    </script>
 </div>
 
     

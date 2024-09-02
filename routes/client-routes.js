@@ -22,7 +22,7 @@ router.get('/sendJobReq/:id', (req,res)=>{
 router.get('/jobs_list',async(req,res)=>{
     
     const page =  parseInt(req.query.page) || 1;
-    const limit = 9;
+    const limit = 50;
     const offset = (page - 1)*limit
 
     let result = await Search.search_job("%%",1,offset,limit)
@@ -30,20 +30,44 @@ router.get('/jobs_list',async(req,res)=>{
     const totalItems = result.recordsets[0][0].TotalCount;
     const totalPages = Math.ceil(totalItems / limit); 
 
-        let chunk = []
-        let chunkSize = 3
-        for (let i =0 ; i < result.recordsets[1].length ; i+=chunkSize) {
-        chunk.push(result.recordsets[1].slice( i, chunkSize + i))
-        }
-        console.log(chunk)
+      
 
     res.render('client/jobs_list',{
-        chunk: chunk,
+        jobs: result.recordsets[1],
         totalPages: totalPages,
-        page: page 
+        page: page ,
+        search: req.query.search || "%%",
+        j_avilability: 1,
         })
 })
 
+
+router.get('/searchJob', async(req,res)=> {
+    try{
+       res.locals.user= ""
+    
+       const page =  parseInt(req.query.page) || 1;
+       const limit = 50;
+       const offset = (page - 1)*limit
+     
+       
+       let result = await Search.search_job("%"+req.query.search+"%" , Number(req.query.j_avilability), offset, limit)
+       
+       const totalItems = result.recordsets[0][0].TotalCount;
+       console.log(result.recordsets[1])
+       const totalPages = Math.ceil(totalItems / limit); 
+
+       res.render('client/jobs_list.ejs',{
+        jobs : result.recordsets[1],
+        page : page,
+        totalPages : totalPages,
+        j_avilability: 1,
+        search: req.query.search || "%%"
+       })
+    }catch(error){
+        res.json(error)
+    }
+})
 
 router.post('/addClientForm',upload.single('image'),async(req,res,next)=> {
 

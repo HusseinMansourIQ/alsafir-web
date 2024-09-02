@@ -481,6 +481,24 @@ try{
                     console.log(err)
                  }
              })
+
+
+             router.get('/showCompJson/:id',isAuthenticated,Roles.lists, async(req,res)=> {
+               try{
+                  let result = await Search.show_comp(req.params.id)
+                  
+                   if(result.recordset.length == 0){
+                     res.json("invalid_ID")
+                     
+                  }else{
+                     res.json(result.recordset)
+                   }
+                  
+                   
+                }catch(err){
+                   console.log(err)
+                }
+            })
         
              router.post('/updateComp',Roles.editor,(req,res)=> {
         
