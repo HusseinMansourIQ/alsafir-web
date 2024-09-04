@@ -98,7 +98,7 @@ router.post('/addClientForm',upload.single('image'),async(req,res,next)=> {
          req.body.job_id,
          buffer)
          
-        res.redirect('/')
+        res.render('client/u_good.ejs')
      }catch(err){
          console.log(err)
      }
