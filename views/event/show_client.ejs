@@ -76,16 +76,18 @@
 
 <div class="container">
     <div class="row mt-4">
-        <div class="col-md-3">
+      <div class="col-md-3">
+          <form  action="/events/updateClientForm" method="post"  enctype="multipart/form-data" novalidate>
                 <img id="uploadedImage" name="uploadedImage" height="150px" width="150px">
+                <input type="file" class="form-control" name="image" id="image" aria-describedby="basic-addon1" >
                 <hr>
             </div>
         <div class="col-md-6 ">
             <h1 class="display-4">معلومات الطلب</h1>
             <hr>
     
-            <form  action="/addClientForm" method="post"  enctype="multipart/form-data" novalidate>
-            <!-- Name input-->
+              <input type="hidden" name="c_id" id="c_id" value="<%=client.c_id%>" >
+              <!-- Name input-->
             <div class="form-group">
                 <label for="title">الاسم الثلاثي</label>
                 <input type="text" name="c_name" id="c_name" class="form-control" value="<%=client.c_name%>" required>
@@ -158,6 +160,12 @@
                     <label for="location">الخبرات</label>
                     <input type="text" name="exper_name" id="exper_name" class="form-control" value="<%=client.c_exper_name%>">
                 </div>
+
+
+                <div class="form-group">
+                  <label for="location">الخبرات</label>
+                  <input type="text" name="wanted_job" id="wanted_job" class="form-control" value="<%=client.c_study2%>">
+              </div>
                 
 
            
@@ -179,6 +187,7 @@
             
 
             <div class="form-group">
+              <button type="submit" class="btn btn-primary">تعديل</button>
                 <a href="<%= '/events/acceptWorker/' + client.c_id%>" class="btn btn-primary"> قبول </a>
                 <%if(job_id != "لا يوجد"){%>
                 <a href="<%= '/events/showJob/' + job_id%>" class="btn btn-primary"> اضهار الوضيفة </a>

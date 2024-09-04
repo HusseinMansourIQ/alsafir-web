@@ -84,6 +84,7 @@ router.post('/addClientForm',upload.single('image'),async(req,res,next)=> {
  try{
  
     await Insert.insert_client(
+        req.body.wanted_job||"wanted_job",
          req.body.c_name,
          req.body.c_tel,
          req.body.c_address,

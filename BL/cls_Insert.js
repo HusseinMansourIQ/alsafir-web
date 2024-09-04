@@ -115,7 +115,7 @@ module.exports={
                     
             },
                 
-                async insert_client(c_name,c_tel,c_address, c_birth_date, c_study1,  c_social_status, c_sex, c_note,c_exper_name,c_is_job,c_job_id, image){
+                async insert_client(wanted_job, c_name, c_tel, c_address, c_birth_date, c_study1,  c_social_status, c_sex, c_note,c_exper_name,c_is_job,c_job_id, image){
 
     let request =await Dal.sql_open()
     request.input('c_name',sql.NVarChar, c_name);
@@ -124,7 +124,7 @@ module.exports={
     request.input('c_id_no',sql.NVarChar, "c_id_no");
     request.input('c_pirthdate',sql.NVarChar, c_birth_date);
     request.input('c_study1',sql.NVarChar, c_study1);
-    request.input('c_study2',sql.NVarChar, "c_study2");
+    request.input('c_study2',sql.NVarChar, wanted_job);// this one is used for wanter job field 
     request.input('c_sex',sql.NVarChar, c_sex);
     request.input('c_graduate_date1',sql.NVarChar, "grad1");
     request.input('c_graduate_date2',sql.NVarChar, "grad2");
@@ -138,14 +138,10 @@ module.exports={
     request.input('c_status',sql.NVarChar, c_social_status);
     request.input('c_img',sql.VarBinary, image);
     
-        let result = await request.execute('sp_insert_client');
+        await request.execute('sp_insert_client');
         await Dal.sql_close()
         
-        
-        
-        
-        
-        
+
         
     },
 }

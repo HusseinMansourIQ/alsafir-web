@@ -830,5 +830,45 @@ try{
                          }
                      })
 
+                     router.post('/updateClientForm',upload.single('image'),async(req,res,next)=> {
+
+                        let image 
+                        let buffer
+                        if (!req.file) {
+                           let result = await Search.get_c_image_by_id(req.body.c_id)
+                           console.log(result.recordset[0].c_img + " this is image req")
+                           buffer = result.recordset[0].c_img
+                       }else{
+                          
+                          image = await Jimp.read(req.file.path);
+                          buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+
+                       }
+                       
+                     
+                     try{
+                     
+                        await Update.update_client(
+                             req.body.c_id,
+                             req.body.wanted_job||"wanted_job",
+                             req.body.c_name,
+                             req.body.c_tel,
+                             req.body.c_address,
+                             req.body.c_birth_Date,
+                             req.body.c_study1,
+                             req.body.c_social_status,
+                             req.body.c_sex,
+                             req.body.c_note,
+                             req.body.exper_name,
+                             buffer)
+                             
+                            res.redirect('/events/pendingNames_list')
+                         }catch(err){
+                             console.log(err)
+                         }
+                             
+                             
+                         })
+
                     
 module.exports = router
