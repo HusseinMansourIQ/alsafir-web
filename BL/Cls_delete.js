@@ -50,4 +50,12 @@ module.exports={
                 await request.execute('sp_del_client');
                 await Dal.sql_close()
             },
+
+            async delete_Fname(id){
+                
+                let request =await Dal.sql_open()
+                    request.input('id',sql.Int, Number(id));            
+                    await request.execute('sp_del_fName');
+                    await Dal.sql_close()
+                },
 }

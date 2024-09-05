@@ -155,4 +155,22 @@ module.exports={
                         
                     },
 
+                    async update_finished_name(id,user_name, user_job, user_address,user_phone_number,user_note ,img){
+
+                        let request =await Dal.sql_open()
+                        request.input('id',sql.Int, Number(id));
+                        request.input('user_name',sql.NVarChar, user_name);
+                        request.input('user_job',sql.NVarChar,user_job);
+                        request.input('user_address',sql.NVarChar, user_address);
+                        request.input('user_phone_number',sql.NVarChar, user_phone_number);
+                        request.input('user_note',sql.NVarChar, user_note);
+                        request.input('user_img',sql.VarBinary, img);
+                        
+                            await request.execute('sp_update_finished_names');
+                            await Dal.sql_close()
+                            
+                    
+                            
+                        },
+
 }

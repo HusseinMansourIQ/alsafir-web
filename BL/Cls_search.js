@@ -218,4 +218,38 @@ module.exports = {
         await dal.sql_close()
         return result
     },
+
+
+    async get_finised_names(offset, limit){
+
+        let request = await dal.sql_open()
+
+        request.input('Offset', sql.Int, offset)
+        request.input('PageSize', sql.Int, limit)
+
+        let result = await request.execute('sp_get_finished_names')
+        await dal.sql_close()
+        return result
+    },
+
+    async get_Fname_by_id(id){
+
+        let request = await dal.sql_open()
+
+        request.input('id', sql.Int,Number(id))
+        
+        let result = await request.execute('sp_get_fusers_by_id')
+        await dal.sql_close()
+        return result
+    },
+
+    async get_f_image_by_id(id){
+
+        let request = await dal.sql_open()
+        request.input('id', sql.Int,Number(id))
+       
+        let result = await request.execute('sp_get_fuser_img_by_id')
+        await dal.sql_close()
+        return result
+    },
 }

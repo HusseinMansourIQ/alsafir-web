@@ -1,0 +1,63 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        
+        <div class="col-md-3">
+        <form  action="/events/addFinishedName" method="post"  enctype="multipart/form-data">
+            <img src="<%= '/images/' + user.avatar%>" height="150px" width="150px">
+            <input type="file" class="form-control" name="image" aria-describedby="basic-addon1" >
+            <hr>
+        </div>
+        
+        <div class="col-md-6 offset-md-1">
+                <h1 class="display-4">اضافة اسم احتياط</h1>
+                <hr>
+                
+                <%- include('../partials/flashMessages') -%>      
+                    <div class="form-group">
+                    <label for="title">أدخل الاسم الثلاثي</label>
+                    <input type="text" name="f_name" id="f_name" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="title">رقم الهاتف</label>
+                    <input type="text" name="f_tel" id="f_tel" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="title">الوظيفة</label>
+                    <input type="text" name="f_job" id="f_job" class="form-control">
+                </div>
+
+                    <div class="form-group">
+                            <label for="w_address">العنوان</label>
+                            <input type="text" name="f_address" id="f_address" class="form-control">
+                        </div>
+
+                       
+                <div class="form-group">
+                    <label for="location">الملاحضات</label>
+                    <input  type="text" name="f_note" id="f_note" class="form-control">
+                </div>
+
+                
+
+
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"> اضافة</button>
+                    </div>
+                </div>
+                
+            </form>
+        
+
+    </div>
+    
+    
+</div>
+
+    
+<%- include('../partials/footer') -%>

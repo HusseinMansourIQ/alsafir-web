@@ -11,6 +11,7 @@ const moment = require('moment');
 const sql = require('mssql/msnodesqlv8')
 const Jimp = require('jimp');
 const multer = require('multer');
+const Cls_search = require("../BL/Cls_search")
 moment().format();
 const upload = multer({ dest: 'uploads/' });
 
@@ -765,7 +766,7 @@ try{
 
 
                      
-                     router.get('/acceptWorker/:id', isAuthenticated,async(req,res)=> {
+                     router.get('/acceptWorker/:id', isAuthenticated,Roles.editor,async(req,res)=> {
                         try{
                            let client = await Search.get_client_by_id(req.params.id)
                            
@@ -819,7 +820,7 @@ try{
 
 
                      
-                     router.get('/deleteClient/:id', isAuthenticated,async(req,res)=> {
+                     router.get('/deleteClient/:id', isAuthenticated,Roles.editor,async(req,res)=> {
                         try{
 
                            await Delete.delete_client(req.params.id)
@@ -830,7 +831,7 @@ try{
                          }
                      })
 
-                     router.post('/updateClientForm',upload.single('image'),async(req,res,next)=> {
+                     router.post('/updateClientForm',upload.single('image'),Roles.editor,async(req,res,next)=> {
 
                         let image 
                         let buffer
@@ -869,6 +870,232 @@ try{
                              
                              
                          })
+
+
+                         router.get('/addFinishedName',isAuthenticated,Roles.addition, async(req,res)=> {
+                           try{
+                        
+                              res.render('event/add_finished_name.ejs')
+                               
+                            }catch(err){
+                               console.log(err)
+                            }
+                        })
+
+                        router.post('/addFinishedName',upload.single('image'),Roles.addition,async(req,res,next)=> {
+
+                           let image 
+                           if (!req.file) {
+                              console.log("this is from no file ")
+                              image = await Jimp.read('uploads/images/profile.png');
+                          }else{
+                             
+                             image = await Jimp.read(req.file.path);
+                             console.log("this is from file ")
+                          }
+                              const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+                          
+                        
+                        try{
+                        
+                           await Insert.insert_finished_name(
+                                req.body.f_name,
+                                req.body.f_job,
+                                req.body.f_address,
+                                req.body.f_tel,
+                                req.body.f_note,
+                                buffer)
+                        
+                               res.redirect('/events/finished_names_list')
+                            }catch(err){
+                                console.log(err)
+                            }
+                                
+                                
+                            })
+
+
+                            router.post('/updateFinishedName',upload.single('image'),Roles.addition,async(req,res,next)=> {
+
+                              let image
+                              let buffer
+                     
+                              if (!req.file) {
+                                 let result = await Search.get_f_image_by_id(req.body.f_id)
+                                 buffer = result.recordset[0].user_img
+                                
+                             }else{
+                                 image = await Jimp.read(req.file.path);
+                                 buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+                           }
+                           
+                           try{
+                           
+                              await Update.update_finished_name(
+                                   req.body.f_id,
+                                   req.body.f_name,
+                                   req.body.f_job,
+                                   req.body.f_address,
+                                   req.body.f_tel,
+                                   req.body.f_note,
+                                   buffer)
+                           
+                                  res.redirect('/events/finished_names_list')
+                               }catch(err){
+                                   console.log(err)
+                               }
+                                   
+                                   
+                               })
+
+
+
+                            router.get('/finished_names_list',isAuthenticated, async(req,res)=> {
+                              try{
+                               const page =  parseInt(req.query.page) || 1;
+                               const limit = 50;
+                         
+                               const offset = (page - 1)*limit
+                               
+                                 let result = await Search.get_finised_names(offset , limit)
+                                 
+                                 const totalItems = result.recordsets[0][0].TotalCount;
+                                 console.log(result.recordsets[1])
+                                 const totalPages = Math.ceil(totalItems / limit);          
+                                 
+                                 res.render('event/finished_names_list.ejs',{
+                                    names : result.recordsets[1],
+                                    page : page,
+                                    totalPages : totalPages,
+                                    search : ""
+                                 })
+                                  
+                               }catch(err){
+                                  console.log(err)
+                               }
+                           })
+
+
+                           router.get('/showFinishedName/:id',isAuthenticated,async(req,res)=> {
+                              try{
+                        
+                                 let result = await Search.get_Fname_by_id(req.params.id)
+                                 console.log(result.recordset)
+                                 res.render('event/show_finished_name.ejs',{
+                                    name: result.recordset,
+                                    
+                                 })
+                                  
+                               }catch(err){
+                                  console.log(err)
+                               }
+                              })
+
+                              router.get('/get_f_image/:id',isAuthenticated,Roles.lists, async(req,res)=> {
+                                 try{
+                                    let result = await Search.get_f_image_by_id(req.params.id)
+                                    const imageData = result.recordset[0].user_img
+                                    res.setHeader('Content-Type', 'image/png');
+                                    res.send(imageData);
+                                     
+                                  }catch(err){
+                                     console.log(err)
+                                  }
+                              })
+
+
+
+                              router.get('/deleteFinishedName/:id',isAuthenticated,Roles.editor, async(req,res)=> {
+                                 try{
+                                    let result = await Delete.delete_Fname(req.params.id)
+                                    res.redirect('/events/finished_names_list')
+                                     
+                                  }catch(err){
+                                     console.log(err)
+                                  }
+                              })
+
+
+                              router.get('/clientToFinishedName/:id',Roles.addition,async(req,res,next)=> {
+                              
+                              try{
+                                 
+                                 let result = await Search.get_client_by_id(req.params.id)
+                              console.log(result)
+                                 await Insert.insert_finished_name(
+                                      result.recordset[0].c_name,
+                                      result.recordset[0].c_study2, // wanted_job
+                                      result.recordset[0].c_addres,
+                                      result.recordset[0].c_tel,
+                                      result.recordset[0].c_note,
+                                      result.recordset[0].c_img)
+
+                                      await Delete.delete_client(req.params.id)
+                              
+                                     res.redirect('/events/clients_list')
+                                  }catch(err){
+                                      console.log(err)
+                                  }
+                                      
+                                      
+                                  })
+
+
+                                  router.get('/FinishedNameToWorker/:id',Roles.addition,async(req,res,next)=> {
+                              
+                                    try{
+                                       
+                                       const data = [
+                                          { exper_name: client.recordset[0].c_exper_name, exper_level: " ",exper_time :" "},
+                                      ];
+                                  
+                                      console.log(req.body.w_note + " this is notes from add worker post ")
+                                  
+                                      // Define the table type parameter
+                                      const exper = new sql.Table('dbo.exper_TableType7_new');
+                                      exper.columns.add('exper_name', sql.NVarChar(50));
+                                      exper.columns.add('exper_level', sql.NVarChar(50));
+                                      exper.columns.add('exper_not', sql.NVarChar(256));
+                                      exper.columns.add('exper_time', sql.NVarChar(50));
+                                  
+                                      // Add rows to the table type parameter
+                                      data.forEach(row => {
+                                          exper.rows.add(row.exper_name, row.exper_level,"", row.exper_time);
+                                      });
+                                  
+                                      console.log(exper)
+                                     await Insert.insert_worker(
+                                          client.recordset[0].c_name,
+                                          client.recordset[0].c_tel,
+                                          client.recordset[0].c_addres,
+                                          "نوع الهوية",
+                                          "رقم الهوية",
+                                          client.recordset[0].c_pirthdate,
+                                          client.recordset[0].c_study1,
+                                          "graduation",
+                                          "study_2",
+                                          "graduation_2",
+                                          "الراتب",
+                                          client.recordset[0].c_status,
+                                          client.recordset[0].c_sex,
+                                          "متوفر",
+                                          client.recordset[0].c_job_id,
+                                          exper,
+                                          req.user.email,
+                                          client.recordset[0].c_img)
+            
+                                          await Delete.delete_client(client.recordset[0].c_id)
+                                    
+                                           res.redirect('/events/finished_names_list')
+                                        }catch(err){
+                                            console.log(err)
+                                        }
+                                            
+                                            
+                                        })
+      
+      
+                                       
 
                     
 module.exports = router

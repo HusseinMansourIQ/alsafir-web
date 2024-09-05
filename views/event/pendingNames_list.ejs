@@ -47,6 +47,7 @@
             <td>التحصيل الدراسي</td>
             <td>المهارة</td>
             <td>وضيفة؟</td>
+            <td>احتياط</td>
             <td>قبول</td>
             <td>حذف</td>
 
@@ -63,6 +64,8 @@
                 <td><%=client.c_study1%></td>
                 <td><%=client.c_exper_name%></td>
                 <td><%=client.c_is_job%></td>
+                <td><a href="<%=  '/events/clientToFinishedName/' + client.c_id %>" class="btn btn-primary"  style="padding: 0 0 0 0 !important
+     ;margin: -2.5px auto -2px auto !important;"> احتياط </a></td>
                 <td><a href="<%=  '/events/acceptWorker/' + client.c_id %>" class="btn btn-primary"  style="padding: 0 0 0 0 !important
      ;margin: -2.5px auto -2px auto !important;"> قبول </a></td>
                 <td><a href="<%=  '/events/deleteClient/' + client.c_id%>" class="btn btn-danger"  style="padding: 0 0 0 0 !important

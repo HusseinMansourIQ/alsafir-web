@@ -1,0 +1,69 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+    <div class="row mt-4">
+        
+        <div class="col-md-3">
+        <form  action="/events/updateFinishedName" method="post"  enctype="multipart/form-data">
+            <img id="uploadedImage" name="uploadedImage" height="150px" width="150px">
+            <input type="file" class="form-control" name="image" aria-describedby="basic-addon1" >
+            <hr>
+        </div>
+        
+        <div class="col-md-6 offset-md-1">
+            <input type="hidden" name="f_id" id="f_id" class="form-control" value="<%=name[0].id%>">
+
+                <h1 class="display-4">تعديل </h1>
+                <hr>
+                
+                <%- include('../partials/flashMessages') -%>      
+                    <div class="form-group">
+                    <label for="title">أدخل الاسم الثلاثي</label>
+                    <input type="text" name="f_name" id="f_name" class="form-control" value="<%=name[0].user_name%>">
+                </div>
+
+                <div class="form-group">
+                    <label for="title">رقم الهاتف</label>
+                    <input type="text" name="f_tel" id="f_tel" class="form-control" value="<%=name[0].user_phone_number%>">
+                </div>
+
+                <div class="form-group">
+                    <label for="title">الوظيفة</label>
+                    <input type="text" name="f_job" id="f_job" class="form-control" value="<%=name[0].user_job%>">
+                </div>
+
+                    <div class="form-group">
+                            <label for="w_address">العنوان</label>
+                            <input type="text" name="f_address" id="f_address" class="form-control" value="<%=name[0].user_address%>">
+                        </div>
+
+                       
+                <div class="form-group">
+                    <label for="location">الملاحضات</label>
+                    <input  type="text" name="f_note" id="f_note" class="form-control" value="<%=name[0].user_note%>">
+                </div>
+
+                
+
+
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"> تعديل</button>
+                    </div>
+                </div>
+                
+            </form>
+        
+
+    </div>
+    
+    <script>
+         const clientID = '<%=name[0].id%>'
+        const uploadedImage = document.getElementById('uploadedImage');
+        uploadedImage.src = `/events/get_f_image/${clientID}`;
+    </script>
+</div>
+
+    
+<%- include('../partials/footer') -%>
