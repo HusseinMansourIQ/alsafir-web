@@ -429,6 +429,7 @@ try{
              
                     Insert.insert_comp(
                         req.body.com_name,
+                        req.body.owner_id,
                         req.body.comp_tel,
                         req.body.comp_type,
                         req.body.comp_addres,
@@ -508,6 +509,7 @@ try{
                  
                       Update.update_comp(
                         req.body.comp_id,
+                        req.body.owner_id,
                         req.body.com_name,
                         req.body.comp_tel,
                         req.body.comp_type,

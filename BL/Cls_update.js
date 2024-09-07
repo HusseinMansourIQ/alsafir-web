@@ -81,11 +81,12 @@ module.exports={
             
         },
 
-        async update_comp(id , com_name,comp_tel,comp_type,comp_addres, note, avilability){
+        async update_comp(id,owner_id , com_name,comp_tel,comp_type,comp_addres, note, avilability){
                  
 
             let request =await Dal.sql_open()
-                request.input('comp_id',sql.Int, id);
+                request.input('comp_id',sql.Int, id); 
+                request.input('owner_id',sql.Int, owner_id);
                 request.input('com_name',sql.NVarChar, com_name);
                 request.input('comp_tel',sql.NVarChar, comp_tel);
                 request.input('comp_type',sql.NVarChar,comp_type);
@@ -169,7 +170,7 @@ module.exports={
                             await request.execute('sp_update_finished_names');
                             await Dal.sql_close()
                             
-                    
+            
                             
                         },
 

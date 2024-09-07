@@ -1,0 +1,91 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="container">
+
+    <div class="row mt-3">
+        <div class="col md-12">
+            <%- include('../partials/flashMessages') -%>
+        </div>
+
+    </div>
+
+    <form  action="/employer/sent_list" method="get">
+        <input type="hidden" name="search" id="search" value="<%=owner_id%>">
+
+        <div class="row">
+    
+            <div class="form-group col-md-1">
+                <button type="submit" class="form-control btn-primary">بحث</button>
+                
+            </div>
+            
+            <div class="form-group col-md-3">
+                
+                <input class="form-control" id="search" name="search" type="text" placeholder="Search here">
+            </div>
+    
+                </div>
+            </form>
+            <div class="table-responsive">
+
+    <table class="table mydatatable table-hover w-120 table-striped" style="margin-top: 20px;" >
+        <tbody>
+           
+        <tr>
+            <td>الاسم</td>
+            <td>العمر</td>
+            <td>العنوان</td>
+            <td>نوع العمل</td>
+            <td>الخبرة</td>
+           
+
+            
+
+        </tr>
+        <% names.forEach((name)=> {%>
+
+            <tr>
+
+                <td> <a href="<%=  '/employer/showSent/' + name.sent_id + '/' + name.w_id%>" style="text-decoration: unset;color: black;"><%=name.w_name%></a></td>
+                <td><%=name.w_pirthdate%></td>
+                <td><%=name.w_addres%></td>
+                <td><%=name.comp_type%></td>
+                <td><%=name.exper_name%></td>
+            </tr>
+        <%})%>
+
+        </tbody>
+    </table>
+</div>
+
+    <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination">
+            <li class="page-item <%= page === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="<%= search ? `?search=${search}&page=${page-1}` : `?page=${page-1}` %>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <% 
+                const maxVisibleButtons = 5;
+                const startPage = Math.max(1, page - Math.floor(maxVisibleButtons / 2));
+                const endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+                
+            %>
+            <% for (let i = startPage; i <= endPage; i++) { %>
+                <li class="page-item <%= page === i ? 'active' : '' %>">
+                    <a class="page-link" href="<%= search ? `?search=${search}&page=${i}` : `?page=${i}` %>" aria-label="Next">
+                        <%= i %></a>
+                </li>
+
+                
+            <% } %>
+            <li class="page-item <%= page === totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="<%= search ? `?search=${search}&page=${page+1}` : `?page=${page+1}` %>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+
+<%- include('../partials/footer') -%>

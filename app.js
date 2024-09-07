@@ -27,7 +27,7 @@ app.use(session({
     secret: 'oievn0598jve0%i9vmnD#d09jv&0d9jv0@#e9j53pioo43mv09j',
     resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: 60000 * 15}
+    cookie: {maxAge: 60000 * 60}
 }))
 app.use(flash())
 // bring passport 
@@ -53,6 +53,9 @@ app.use('/users', users)
 // have fun games route
 const client = require('./routes/client-routes')
 app.use('/', client)
+
+const employer = require('./routes/employer-routes')
+app.use('/employer', employer)
 
 
 app.listen(3000, ()=> {

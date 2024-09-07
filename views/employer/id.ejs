@@ -1,0 +1,13 @@
+<%- include('../partials/client_navbar') -%>
+<%- include('../partials/header') -%>
+<div class="col-md-4 mt-4 col-sm-offset-4">
+    <form action="/employer/sent_list" method="get">
+
+        <div class="form-group " nonvalidate >
+            <label for="title" class="">ادخل ال ID الخاص بك</label>
+            <input type="text" name="owner_id" id="owner_id" class="form-control" required>
+            <input type="hidden" name="search" id="search" value="">
+        </div>
+        <button type="submit" class="btn btn-primary">التالي</button>
+    </form>
+    </div>

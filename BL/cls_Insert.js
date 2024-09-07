@@ -69,11 +69,12 @@ module.exports={
             
         },
 
-        async insert_comp(com_name,comp_tel,comp_type,comp_addres, note, avilability){
+        async insert_comp(com_name,owner_id,comp_tel,comp_type,comp_addres, note, avilability){
                  
 
             let request =await Dal.sql_open()
-        
+
+            request.input('owner_id',sql.Int, owner_id);
                 request.input('com_name',sql.NVarChar, com_name);
                 request.input('comp_tel',sql.NVarChar, comp_tel);
                 request.input('comp_type',sql.NVarChar,comp_type);

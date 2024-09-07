@@ -117,6 +117,19 @@ module.exports = {
         return result
     },
 
+    async search_sent_names_from_employer(owner_id,param , offset,limit){
+
+        let request = await dal.sql_open()
+        request.input('Param', sql.NVarChar, param)
+        request.input('Offset', sql.Int, offset)
+        request.input('PageSize', sql.Int, limit)
+        request.input('Owner_id', sql.Int, Number(owner_id))
+
+        let result = await request.execute('sp_search_sent_from_employer')
+        await dal.sql_close()
+        return result
+    },
+
     async get_all_sent_names(offset,limit){
 
         let request = await dal.sql_open()

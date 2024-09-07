@@ -38,6 +38,10 @@
                         
                                 <hr>
                         
+                                <div class="form-group">
+                                    <label for="title">ID صاحب العمل</label>
+                                    <input type="text" name="owner_id" id="owner_id" class="form-control">
+                                    </div>
 
                             
 
@@ -64,5 +68,7 @@
     
 </div>
 
-    
+    <script>
+        document.getElementById("owner_id").value = Math.floor(100000 + Math.random() * 900000);
+    </script>
 <%- include('../partials/footer') -%>
