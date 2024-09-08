@@ -265,4 +265,22 @@ module.exports = {
         await dal.sql_close()
         return result
     },
+
+
+    async  search_updated_sents(param , avilability , offset,limit){
+        console.log(param, avilability)
+        
+        let request = await dal.sql_open()
+
+        request.input('Param', sql.NVarChar, "%"+param+"%")
+        request.input('accept', sql.NVarChar, avilability)
+        request.input('Offset', sql.Int, offset)
+        request.input('PageSize', sql.Int, limit)
+
+        let result = await request.execute('sp_search_updated_search')
+        // ik I fucked up with the name, really have no energy to change it 
+        await dal.sql_close()
+
+        return result
+    },
 }

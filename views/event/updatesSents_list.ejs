@@ -1,10 +1,5 @@
 <%- include('../partials/header') -%>
-<%- include('../partials/client_navbar') -%>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-
+<%- include('../partials/navbar') -%>
 <div class="container">
 
     <div class="row mt-3">
@@ -14,9 +9,7 @@
 
     </div>
 
-    <form  action="/employer/sent_list" method="get">
-        <input type="hidden" name="owner_id" id="owner_id" value="<%=owner_id%>">
-
+    <form  action="/events/searchUpdatedSent" method="get">
         <div class="row">
     
             <div class="form-group col-md-1">
@@ -29,6 +22,18 @@
                 <input class="form-control" id="search" name="search" type="text" placeholder="Search here">
             </div>
     
+            <div class="form-group col-md-2">
+                
+                <select class="form-control " id="avilability" name="avilability">
+                    <option>الكل</option>
+                    <option>مقبول</option>
+                    <option>غير مقبول</option>
+                    <option>تم العمل</option>
+                    <option>متابعة</option>
+
+                    </select>
+                </div>
+    
                 </div>
             </form>
             <div class="table-responsive">
@@ -37,14 +42,14 @@
         <tbody>
            
         <tr>
+            <td class="">User ID</td>
             <td>الاسم</td>
+            <td>رقم الهاتف</td>
             <td>العمر</td>
-            <td>الحالة</td>
             <td>العنوان</td>
-            <td>نوع العمل</td>
             <td>الخبرة</td>
-            <td>action</td>
-           
+            <td>الحالة</td>
+            <td>التاريخ</td>
 
             
 
@@ -52,28 +57,17 @@
         <% names.forEach((name)=> {%>
 
             <tr>
+                <td class=""><%=name.id%></td>
 
-                <td> <a href="<%=  '/employer/showSent/' + name.sent_id + '/' + name.w_id%>" style="text-decoration: unset;color: black;"><%=name.w_name%></a></td>
+                <td> <a href="<%=  '/events/showSent/' + name.sent_id + '/' + name.w_id%>" style="text-decoration: unset;color: black;"><%=name.w_name%></a></td>
+                <td><%=name.w_tel%></td>
                 <td><%=name.w_pirthdate%></td>
-                <td><%=name.accept%></td>
                 <td><%=name.w_addres%></td>
-                <td><%=name.comp_type%></td>
-                <td><%=name.exper_name%></td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" style="padding: 0 0 0 0 !important
-     ;margin: -2.5px auto -2px auto !important;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fas fa-bars"></i> action
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <li><a class="dropdown-item" href="<%=  '/employer/update_sent_availability/' + name.sent_id + '/' + owner_id +'/' +name.w_id  +  '/1'%>">مقبول</a></li>
-                          <li><a class="dropdown-item" href="<%=  '/employer/update_sent_availability/' + name.sent_id + '/' + owner_id +'/' +name.w_id  + '/0'%>">غير مقبول</a></li>
+                <td><%=name.exper_name%></td>                
+                <td><%=name.accept%></td>
+                <td><%=moment(name.UpdateDate).format('YYYY-MM-DD')%></td>
+                
 
-
-                         
-                        </ul>
-                      </div>
-                </td>
             </tr>
         <%})%>
 
@@ -84,7 +78,7 @@
     <nav aria-label="Page navigation" class="mt-3">
         <ul class="pagination">
             <li class="page-item <%= page === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="<%= search ? `?search=${search}&page=${page-1}` : `?page=${page-1}` %>" aria-label="Previous">
+                <a class="page-link" href="<%= search && avilability ? `?search=${search}&avilability =${avilability}&page=${page-1}` : `?page=${page-1}` %>" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -96,14 +90,14 @@
             %>
             <% for (let i = startPage; i <= endPage; i++) { %>
                 <li class="page-item <%= page === i ? 'active' : '' %>">
-                    <a class="page-link" href="<%= search ? `?search=${search}&page=${i}` : `?page=${i}` %>" aria-label="Next">
+                    <a class="page-link" href="<%= search && avilability ? `?search=${search}&avilability=${avilability}&page=${i}` : `?page=${i}` %>" aria-label="Next">
                         <%= i %></a>
                 </li>
 
                 
             <% } %>
             <li class="page-item <%= page === totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="<%= search ? `?search=${search}&page=${page+1}` : `?page=${page+1}` %>" aria-label="Next">
+                <a class="page-link" href="<%= search && avilability ? `?search=${search}&avilability=${avilability}&page=${page+1}` : `?page=${page+1}` %>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -111,4 +105,8 @@
         </ul>
     </nav>
 
+    <script>
+        document.getElementById('avilability').value ='<%=avilability%>';
+
+</script>
 <%- include('../partials/footer') -%>

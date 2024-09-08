@@ -594,7 +594,7 @@ try{
                      })
 
                      
-                     router.get('/searchSent', Roles.lists, async(req,res)=> {
+                     router.get('/searchSent',isAuthenticated ,Roles.lists, async(req,res)=> {
                         try{
                            
                            res.locals.user = ""
@@ -707,7 +707,8 @@ try{
                             page : page,
                             totalPages : totalPages,
                             search : "",
-                            c_is_job: "الكل"
+                            c_is_job: "الكل",
+                            moment : moment
                             
                            })
                             
@@ -739,7 +740,8 @@ try{
                             page : page,
                             totalPages : totalPages,
                             c_is_job: req.query.c_is_job,
-                            search: req.query.search || "%%"
+                            search: req.query.search || "%%",
+                            moment : moment
                            })
                             
                          }catch(err){
@@ -1034,7 +1036,7 @@ try{
 
                                       await Delete.delete_client(req.params.id)
                               
-                                     res.redirect('/events/clients_list')
+                                     res.redirect('/events/pendingNames_list')
                                   }catch(err){
                                       console.log(err)
                                   }
@@ -1095,6 +1097,37 @@ try{
                                             
                                             
                                         })
+
+
+                                        // this is the correct way to do everything , no need for get all and search 
+                                        // I didnt put the %% on req.query.search, cuz then its will be true even if its undefined 
+                                        router.get('/searchUpdatedSent',isAuthenticated, Roles.lists, async(req,res)=> {
+                                          try{
+                                             
+                                             res.locals.user = ""
+                                             const page =  parseInt(req.query.page) || 1;
+                                             const limit = 50;
+                                             const offset = (page - 1)*limit
+                                             
+                                             let result = await Search.search_updated_sents(req.query.search || "%%", req.query.avilability || "الكل",offset,limit)
+                  
+                                             const totalItems = result.recordsets[0][0].TotalCount;
+                                             console.log(result.recordsets[1])
+                                             const totalPages = Math.ceil(totalItems / limit);
+                                             
+                                              res.render('event/updatesSents_list.ejs',{
+                                              names : result.recordsets[1],
+                                              moment : moment,
+                                              page : page,
+                                              totalPages : totalPages,
+                                              search: req.query.search,
+                                              avilability: req.query.avilability || "الكل"
+                                             })
+                                              
+                                           }catch(err){
+                                              console.log(err)
+                                           }
+                                       })
       
       
                                        

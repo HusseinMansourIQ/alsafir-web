@@ -46,6 +46,7 @@
             <td>تاريخ الميلاد</td>
             <td>التحصيل الدراسي</td>
             <td>المهارة</td>
+            <td>التاريخ</td>
             <td>وضيفة؟</td>
             <td>احتياط</td>
             <td>قبول</td>
@@ -64,6 +65,7 @@
                 <td><%=client.c_study1%></td>
                 <td><%=client.c_exper_name%></td>
                 <td><%=client.c_is_job%></td>
+                <td><%=moment(client.creationDate).format('YYYY-MM-DD')%></td>
                 <td><a href="<%=  '/events/clientToFinishedName/' + client.c_id %>" class="btn btn-primary"  style="padding: 0 0 0 0 !important
      ;margin: -2.5px auto -2px auto !important;"> احتياط </a></td>
                 <td><a href="<%=  '/events/acceptWorker/' + client.c_id %>" class="btn btn-primary"  style="padding: 0 0 0 0 !important

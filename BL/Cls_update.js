@@ -128,6 +128,25 @@ module.exports={
                 },
 
 
+                async update_sent_availabilty(sent_id, accept){
+ 
+                    try{
+    
+                        let request =await Dal.sql_open()
+                        
+                        request.input('sent_id',sql.Int, parseInt(sent_id) );
+                        request.input('accept',sql.NVarChar,accept);
+                        
+                        let result = await request.execute('sp_update_sent_availablility');
+                        await Dal.sql_close()
+                        return result
+                    }catch(err){
+                        console.log(err)
+                    }
+                        
+                    },
+
+
                 async update_client(c_id, wanted_job, c_name, c_tel, c_address, c_birth_date, c_study1,  c_social_status, c_sex, c_note,c_exper_name, image){
 
                     let request =await Dal.sql_open()

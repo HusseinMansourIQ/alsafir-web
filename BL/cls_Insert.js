@@ -137,6 +137,7 @@ module.exports={
     request.input('c_tel',c_tel); 
     request.input('c_note',sql.NVarChar(sql.MAX), c_note);
     request.input('c_status',sql.NVarChar, c_social_status);
+    request.input('creationDate',sql.Date, Date.now());
     request.input('c_img',sql.VarBinary, image);
     
         await request.execute('sp_insert_client');
@@ -163,5 +164,24 @@ module.exports={
     
             
         },
+
+
+        async insert_updated_sent(w_id,sent_id,UpdateDate){
+                 
+
+            let request =await Dal.sql_open()
+        
+                
+                request.input('w_id',sql.Int, Number(w_id));
+                request.input('sent_id',sql.Int,Number(sent_id));
+                request.input('UpdateDate',sql.Date, UpdateDate);
+                
+    
+                
+                let result = await request.execute('sp_ins_updated_sents');
+               await Dal.sql_close()
+                
+                
+            },
     
 }
